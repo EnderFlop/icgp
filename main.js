@@ -1,5 +1,5 @@
 window.addEventListener('DOMContentLoaded', () => {
-  const folderContainer = document.getElementById('folderContainer');
+  const folderContainer = document.querySelector('.folderContainer');
 
   // Function to load and display folders
   function loadFolders() {

@@ -1,6 +1,5 @@
 window.addEventListener('DOMContentLoaded', () => {
-  const imageContainer = document.getElementById('imageContainer');
-
+  const container = document.querySelector('.imageContainer');
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const folderName = urlParams.get("folder");
@@ -8,7 +7,7 @@ window.addEventListener('DOMContentLoaded', () => {
   loadImagesFromFolder(folderName)
 
   function loadImagesFromFolder(folderName){
-    imageContainer.innerHTML = ''; // Clear the image container before loading new images
+    container.innerHTML = ''; // Clear the image container before loading new images
     fetch('photos/' + folderName)
       .then(response => response.text())
       .then(data => {
@@ -25,13 +24,27 @@ window.addEventListener('DOMContentLoaded', () => {
 
         imageLinks.forEach(imageLink => {
           const imageName = imageLink.split('/').filter(Boolean).pop();
-          const imageElement = document.createElement('img');
+
+          const outerImageElement = document.createElement('div');
+          outerImageElement.classList.add("image")
+          const imageElement = document.createElement('img')
           imageElement.src = "photos/" + folderName + '/' + imageName;
-          imageContainer.appendChild(imageElement);
+          imageElement.onclick = () => {
+            document.querySelector(".popupImage").style.display = "block";
+            document.querySelector(".popupImage img").src = imageElement.getAttribute("src");
+          }
+          outerImageElement.appendChild(imageElement)
+
+
+          container.appendChild(outerImageElement);
         });
       })
       .catch(error => {
         console.log('Error:', error);
       });
+  }
+  
+  document.querySelector(".popupImage span").onclick = () => {
+    document.querySelector(".popupImage").style.display = "none";
   }
 })
