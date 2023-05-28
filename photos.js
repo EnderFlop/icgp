@@ -27,13 +27,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
           const outerImageElement = document.createElement('div');
           outerImageElement.classList.add("image")
+          const linkElement = document.createElement("a")
+          linkElement.href = `piece.html?folder=${folderName}&piece=${imageName}`
           const imageElement = document.createElement('img')
           imageElement.src = "photos/" + folderName + '/' + imageName;
-          imageElement.onclick = () => {
-            document.querySelector(".popupImage").style.display = "block";
-            document.querySelector(".popupImage img").src = imageElement.getAttribute("src");
-          }
-          outerImageElement.appendChild(imageElement)
+          linkElement.appendChild(imageElement)
+          outerImageElement.appendChild(linkElement)
 
 
           container.appendChild(outerImageElement);
