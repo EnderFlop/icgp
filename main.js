@@ -3,7 +3,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Function to load and display folders
   function loadFolders() {
-    fetch("http://169.254.28.50:3000/folders")
+    fetch("https://169.254.28.50:3000/folders")
       .then(response => response.json())
       .then(data => {
         data.forEach(folder => {

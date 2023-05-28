@@ -6,8 +6,6 @@ const app = express()
 app.use(cors())
 const port = 3000
 
-console.log(process.env)
-
 app.get("/folders", function(req, res) {
   fetch('https://api.github.com/repos/EnderFlop/iowacitygraffiti/contents/photos', {headers: {Authorization: process.env.GITHUB_PAT}})
     .then(response => response.json())
