@@ -3,28 +3,15 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Function to load and display folders
   function loadFolders() {
-    fetch('photos/')
-      .then(response => response.text())
+    fetch('https://api.github.com/repos/EnderFlop/iowacitygraffiti/contents/photos')
+      .then(response => response.json())
       .then(data => {
-        console.log("data")
-        console.log(data)
-        const tempElement = document.createElement('div');
-        tempElement.innerHTML = data;
-  
-        console.log("folderLinks")
-        console.log(Array.from(tempElement.querySelectorAll('a[href]')))
-        const folderLinks = Array.from(tempElement.querySelectorAll('a[href]'))
-          .map(a => a.href)
-          .filter(href => href.endsWith('/'));
-        
-        console.log("done processing folderLinks")
-        console.log(folderLinks)
-  
-        folderLinks.forEach(folderLink => {
-          const folderName = folderLink.split('/').filter(Boolean).pop();
+        data.forEach(folder => {
+          const folderName = folder["name"]
           const folderLinkElement = document.createElement('a');
           folderLinkElement.href = 'photos.html?folder=' + folderName;
           folderLinkElement.innerText = folderName;
+          
           folderContainer.appendChild(folderLinkElement);
         });
       })

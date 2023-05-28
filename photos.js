@@ -2,39 +2,25 @@ window.addEventListener('DOMContentLoaded', () => {
   const container = document.querySelector('.imageContainer');
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
-  const folderName = urlParams.get("folder");
+  const folder = urlParams.get("folder");
 
-  loadImagesFromFolder(folderName)
+  loadImagesFromFolder(folder)
 
-  function loadImagesFromFolder(folderName){
+  function loadImagesFromFolder(folder){
     container.innerHTML = ''; // Clear the image container before loading new images
-    fetch('photos/' + folderName)
-      .then(response => response.text())
+    fetch(`https://api.github.com/repos/EnderFlop/iowacitygraffiti/contents/photos/${folder}`)
+      .then(response => response.json())
       .then(data => {
-        const tempElement = document.createElement('div');
-        tempElement.innerHTML = data;
-
-        const imageLinks = Array.from(tempElement.querySelectorAll('a[href]'))
-          .map(a => a.href)
-          .filter(href => {
-            const imageName = href.split('/').filter(Boolean).pop();
-            const extension = imageName.split('.').pop().toLowerCase();
-            return ['jpg', 'jpeg', 'png', 'gif'].includes(extension);
-          });
-
-        imageLinks.forEach(imageLink => {
-          const imageName = imageLink.split('/').filter(Boolean).pop();
-
+        data.forEach(image => {
+          const imageName = image["name"]
           const outerImageElement = document.createElement('div');
           outerImageElement.classList.add("image")
           const linkElement = document.createElement("a")
-          linkElement.href = `piece.html?folder=${folderName}&piece=${imageName}`
+          linkElement.href = `piece.html?folder=${folder}&piece=${imageName}`
           const imageElement = document.createElement('img')
-          imageElement.src = "photos/" + folderName + '/' + imageName;
+          imageElement.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/photos/${folder}/${imageName}`
           linkElement.appendChild(imageElement)
           outerImageElement.appendChild(linkElement)
-
-
           container.appendChild(outerImageElement);
         });
       })

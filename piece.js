@@ -9,21 +9,15 @@ window.addEventListener('DOMContentLoaded', () => {
 
   function loadPiece(folder, piece){
     container.innerHTML = ""
-    fetch(`photos/${folder}/${piece}`)
-      .then(response => response.blob())
-      .then(blob => {
-        const imageUrl = URL.createObjectURL(blob)
 
-        const outerImageElement = document.createElement('div')
-        outerImageElement.classList.add("image")
-        const imageElement = document.createElement('img')
-        imageElement.src = imageUrl
-        // photos/${folder}/${piece} also works
-        outerImageElement.appendChild(imageElement)
-        container.appendChild(outerImageElement)
-      })
-      .catch(error => {
-        console.log('Error:', error);
-      })
+    const outerImageElement = document.createElement('div')
+    outerImageElement.classList.add("image")
+
+    const imageElement = document.createElement('img')
+    imageElement.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/photos/${folder}/${piece}`
+    
+    outerImageElement.appendChild(imageElement)
+
+    container.appendChild(outerImageElement)
     }
 })
