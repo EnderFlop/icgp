@@ -8,7 +8,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   function loadImagesFromFolder(folder){
     container.innerHTML = ''; // Clear the image container before loading new images
-    fetch(`https://api.github.com/repos/EnderFlop/iowacitygraffiti/contents/photos/${folder}`)
+    fetch(`http://169.254.28.50:3000/photos/${folder}`)
       .then(response => response.json())
       .then(data => {
         data.forEach(image => {

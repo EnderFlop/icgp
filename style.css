@@ -29,6 +29,24 @@
   padding: 10px;
 }
 
+.container .folderContainer .folderOuterElement {
+  border: 5px solid #616161;
+  border-radius: 10px;
+}
+
+.container .folderContainer .folderOuterElement .previewImage {
+  display: block;
+  max-width: 230px;
+  max-height: 95px;
+  width: auto;
+  height: auto;
+}
+
+.container .folderContainer .folderOuterElement a {
+  justify-content: center;
+  color: gray;
+}
+
 .container .imageContainer{
   display: flex;
   flex-wrap: wrap;
