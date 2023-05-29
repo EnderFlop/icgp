@@ -12,7 +12,7 @@ def get_image_name(img_path):
 def create_description(date, location):
     img_path = sys.argv[1]
     img_name = get_image_name(img_path)
-    print(img_path, img_name)
+    print(f"LOCATION: {location}")
     artist = input("Artist: ")
     notes = input("Notes: ")
     data = {
@@ -35,6 +35,6 @@ def create_description(date, location):
     shutil.move(img_path, artist_folder)
 
 #update below values depending on when and were the photos were taken
-DATE = "5/28/2023"
-LOCATION = "Studio 13 / Elray's Alley"
+DATE = "5/29/2023"
+LOCATION = "IMU Bridge (West)"
 create_description(DATE, LOCATION)

@@ -31,8 +31,4 @@ window.addEventListener('DOMContentLoaded', () => {
         console.log('Error:', error);
       });
   }
-  
-  document.querySelector(".popupImage span").onclick = () => {
-    document.querySelector(".popupImage").style.display = "none";
-  }
 })
