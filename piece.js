@@ -15,6 +15,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const imageElement = document.createElement('img')
     imageElement.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/photos/${folder}/${piece}`
+
+    //const descriptionElement = document.createElement("ul")
+    //const imageName = piece.split(".")[0]
+    //const imageDescription = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/photos/${folder}/${imageName}.json`
+    //ok, we have the description in a json. do something with it.
     
     outerImageElement.appendChild(imageElement)
 

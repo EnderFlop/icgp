@@ -3,7 +3,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Function to load and display folders
   function loadFolders() {
-    fetch("https://169.254.28.50:3000/folders")
+    fetch('https://api.github.com/repos/EnderFlop/iowacitygraffiti/contents/photos')
       .then(response => response.json())
       .then(data => {
         data.forEach(folder => {

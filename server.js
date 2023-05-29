@@ -26,3 +26,5 @@ app.listen(port, function(error) {
     console.log("server listening on port " + port)
   }
 })
+
+//look at "NEXT STEPS" to work on hosting the server locally.
