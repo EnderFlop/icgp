@@ -12,15 +12,15 @@ window.addEventListener('DOMContentLoaded', () => {
           const folderOuterElement = document.createElement('div');
           folderOuterElement.classList.add("folderOuterElement");
 
-          const previewImage = document.createElement('img');
-          previewImage.classList.add("previewImage")
-          previewImage.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/photos/${folderName}/preview.jpg`
+          //const previewImage = document.createElement('img');
+          //previewImage.classList.add("previewImage")
+          //previewImage.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/photos/${folderName}/preview.jpg`
 
           const folderLinkElement = document.createElement('a');
           folderLinkElement.href = 'photos.html?folder=' + folderName;
           folderLinkElement.innerText = folderName;
           
-          folderOuterElement.appendChild(previewImage)
+          //folderOuterElement.appendChild(previewImage)
           folderOuterElement.appendChild(folderLinkElement)
           folderContainer.appendChild(folderOuterElement);
         });
