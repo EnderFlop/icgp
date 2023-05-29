@@ -13,6 +13,9 @@ window.addEventListener('DOMContentLoaded', () => {
       .then(data => {
         data.forEach(image => {
           const imageName = image["name"]
+          if (imageName.includes(".json")){ //skip .json files
+            return
+          }
           const outerImageElement = document.createElement('div');
           outerImageElement.classList.add("image")
           const linkElement = document.createElement("a")
