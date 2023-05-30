@@ -14,7 +14,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
           const previewImage = document.createElement('img');
           previewImage.classList.add("previewImage")
-          previewImage.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/photos/${folderName}/PREVIEW.jpg`
+          previewImage.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/photos/${folderName}/PREVIEW_thumbnail.jpeg`
 
           const folderLinkElement = document.createElement('a');
           folderLinkElement.href = 'photos.html?folder=' + folderName;
