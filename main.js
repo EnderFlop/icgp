@@ -3,7 +3,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Function to load and display folders
   function loadFolders() {
-    fetch('https://api.github.com/repos/EnderFlop/iowacitygraffiti/contents/photos')
+    fetch('https://tame-vampirebat-36.telebit.io/folders')
       .then(response => response.json())
       .then(data => {
         data.forEach(folder => {
