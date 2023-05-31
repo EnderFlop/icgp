@@ -13,15 +13,19 @@ window.addEventListener('DOMContentLoaded', () => {
       .then(data => {
         data.forEach(image => {
           const imageName = image["name"]
-          if (imageName.includes(".json")){ //skip .json files
+          if (imageName.includes(".json") || imageName.includes(".JPG") || imageName.includes(".jpg")){ //skip the non-thumbnail files
             return
           }
           const outerImageElement = document.createElement('div');
           outerImageElement.classList.add("image")
+          
+          const realImageName = imageName.split("_thumbnail")[0] + ".jpg"
           const linkElement = document.createElement("a")
-          linkElement.href = `piece.html?folder=${folder}&piece=${imageName}`
+          linkElement.href = `piece.html?folder=${folder}&piece=${realImageName}`
+
           const imageElement = document.createElement('img')
           imageElement.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/photos/${folder}/${imageName}`
+
           linkElement.appendChild(imageElement)
           outerImageElement.appendChild(linkElement)
           container.appendChild(outerImageElement);

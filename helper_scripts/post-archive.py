@@ -45,6 +45,15 @@ def generate_thumbnails():
             image.thumbnail((500, 500))
             image.save(f".\photos\{dir_name}\{image_name}_thumbnail.jpeg", "jpeg", optimize=True, quality=10)
 
+def delete_thumbnails():
+    print("Deleting Thumbnails!")
+    for dir_name in os.listdir(".\photos"):
+        path = os.path.join(".\photos", dir_name)
+        photos = os.listdir(path)
+        for img_file in photos:
+            #skip jsons...................thumbnails....................and images with thumbnails already
+            if "thumbnail" in img_file:
+                os.remove(f".\photos\{dir_name}\{img_file}")
 
 if __name__ == "__main__":
     rename_preview()
