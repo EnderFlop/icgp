@@ -2,6 +2,7 @@ import json
 import sys
 import shutil
 import os
+import re
 
 def get_image_name(img_path):
     img_path = img_path.split("\\")[-1]
@@ -24,7 +25,12 @@ def create_description(date, location):
     }
     obj = json.dumps(data)
 
-    artist_folder = f"../photos/{artist}"
+    #the following uses a regex to match "Streetart" with "Streetart (40)"
+    folders = os.listdir("../photos/")
+    regex = re.compile(r"\b" + re.escape(artist) + r"\b")
+    valid_folder = list(filter(regex.match, folders))[0]
+    artist_folder = f"../photos/{valid_folder}"
+
     #if it doesn't exist, create folder
     if not os.path.exists(artist_folder):
         os.makedirs(artist_folder)
@@ -36,5 +42,5 @@ def create_description(date, location):
 
 #update below values depending on when and were the photos were taken
 DATE = "5/29/2023"
-LOCATION = "IMU Bridge (West)"
+LOCATION = "Evans St near Ralston Creek"
 create_description(DATE, LOCATION)
