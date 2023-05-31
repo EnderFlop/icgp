@@ -5,6 +5,7 @@ import os
 from PIL import Image, ImageOps
 
 def rename_folders():
+    print("Renaming Folders")
     for dir_name in os.listdir(".\photos"):
         path = os.path.join(".\photos", dir_name)
         length = len(os.listdir(path)) // 3 #divided by 3 to remove the .jsons and thumbnail images
@@ -18,6 +19,7 @@ def rename_folders():
             os.rename(path, path + f" ({length})")
 
 def rename_preview():
+    print("Renaming Preview Images")
     for dir_name in os.listdir(".\photos"):
         path = os.path.join(".\photos", dir_name)
         photos = os.listdir(path)
@@ -28,6 +30,7 @@ def rename_preview():
         os.rename(path + f"\{old_filename}.json", path + f"\PREVIEW.json")
 
 def generate_thumbnails():
+    print("Generating Thumbnails")
     for dir_name in os.listdir(".\photos"):
         path = os.path.join(".\photos", dir_name)
         photos = os.listdir(path)
@@ -39,11 +42,12 @@ def generate_thumbnails():
             new_path = os.path.join(path, img_file)
             image = Image.open(new_path)
             image = ImageOps.exif_transpose(image) #needed to keep vertical photos vertical
+            image.thumbnail((500, 500))
             image.save(f".\photos\{dir_name}\{image_name}_thumbnail.jpeg", "jpeg", optimize=True, quality=10)
 
 
 if __name__ == "__main__":
-    rename_folders()
     rename_preview()
     #files are renamed to preview BEFORE thumbnails are generated, keep this order.
     generate_thumbnails()
+    rename_folders()
