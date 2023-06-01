@@ -3,7 +3,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Function to load and display folders
   function loadFolders() {
-    fetch('https://iowacitygraffiti.loca.lt/folders', {headers: {"Bypass-Tunnel-Reminder": ""}})
+    fetch('https://iowacitygraffiti.loca.lt/folders', {headers: {"User-Agent": "UNIQUELOL"}})
       .then(response => response.json())
       .then(data => {
         data.forEach(folder => {
