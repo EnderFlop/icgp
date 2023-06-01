@@ -8,7 +8,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   function loadImagesFromFolder(folder){
     container.innerHTML = ''; // Clear the image container before loading new images
-    fetch(`https://iowacitygraffiti.loca.lt/photos/${folder}`, {headers: {"Bypass-Tunnel-Reminder": ""}})
+    fetch(`https://iowacitygraffiti.loca.lt/photos/${folder}`, {headers: {"User-Agent": "UNIQUELOL"}})
       .then(response => response.json())
       .then(data => {
         data.forEach(image => {
