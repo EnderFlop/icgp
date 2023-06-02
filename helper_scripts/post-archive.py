@@ -55,6 +55,13 @@ def delete_thumbnails():
             if "thumbnail" in img_file:
                 os.remove(f".\photos\{dir_name}\{img_file}")
 
+def generate_folder_list():
+    pass
+
+def generate_photo_list(folder):
+    pass
+
+
 if __name__ == "__main__":
     rename_preview()
     #files are renamed to preview BEFORE thumbnails are generated, keep this order.
