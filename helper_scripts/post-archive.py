@@ -29,6 +29,18 @@ def rename_preview():
         os.rename(path + f"\{old_filename}.jpg", path + f"\PREVIEW.jpg")
         os.rename(path + f"\{old_filename}.json", path + f"\PREVIEW.json")
 
+def get_rid_of_JPGs():
+    print("Ridding the World of .JPGs")
+    for dir_name in os.listdir(".\photos"):
+        path = os.path.join(".\photos", dir_name)
+        photos = os.listdir(path)
+        offenders = [photo for photo in photos if photo[-4:] == ".JPG"]
+        if len(offenders) == 0:
+            continue
+        for photo in offenders:
+            old_filename = photo.split(".")[0]
+            os.rename(path + f"\{old_filename}.JPG", path + f"\{old_filename}.jpg")
+
 def generate_thumbnails():
     print("Generating Thumbnails")
     for dir_name in os.listdir(".\photos"):
@@ -54,44 +66,35 @@ def delete_thumbnails():
             if "thumbnail" in img_file:
                 os.remove(f".\photos\{dir_name}\{img_file}")
 
-#page will fetch and read folder_meta.json, displaying each folder and the thumbnail. We will generate the link to the next html page in javascript
-def generate_folder_list():
-    artist_json = {}
+def generate_metadata():
+    all_artists_list = []
     for folder in os.listdir(".\photos"):
-        folder_dict = {}
-        folder_dict["name"] = folder
-        folder_url_name = folder.replace(" ", "%20") #spaces don't autoserialize themselves, you know.
-        folder_dict["thumbnail_url"] = f"https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/photos/{folder_url_name}/PREVIEW_thumbnail.jpeg"
-        artist_json[folder] = folder_dict
-    print(artist_json)
-    obj = json.dumps(artist_json)
-    with open(".\\folder_meta.json", "w") as outfile:
-        outfile.write(obj)
-
-#page will fetch and read artist_meta.json, linking to the full image and displaying each thumbnail.
-def generate_photo_list():
-    meta_json = []
-    for folder in os.listdir(".\photos"):
+        artist_dict = {}
+        artist_dict["name"] = folder
+        artist_dict["photos"] = []
+        photo_count = 0
         for file in os.listdir(f".\photos\{folder}"):
             photo_dict = {}
             if ".jpg" not in file:
                 continue
+            photo_count += 1
             name = file[:-4] #remove ".jpg"
-            photo_dict["folder"] = folder
-            photo_dict["name"] = name
             folder_url_name = folder.replace(" ", "%20")
+            photo_dict["name"] = name
             photo_dict["thumbnail_url"] = f"https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/photos/{folder_url_name}/{name}_thumbnail.jpeg"
             photo_dict["full_url"] = f"https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/photos/{folder_url_name}/{name}.jpg"
-            meta_json.append(photo_dict)
-    obj = json.dumps(meta_json)
+            artist_dict["photos"].append(photo_dict)
+        artist_dict["count"] = photo_count
+        all_artists_list.append(artist_dict)
+    obj = json.dumps(all_artists_list)
     with open(".\\artist_meta.json", "w") as outfile:
         outfile.write(obj)
 
 if __name__ == "__main__":
     #rename_preview()
-    #files are renamed to preview BEFORE thumbnails are generated, keep this order.
+    #get_rid_of_JPGs()
+    #files are renamed BEFORE anything else is generated, keep this order.
     #generate_thumbnails()
     #rename_folders()
-    #generate_folder_list()
-    generate_photo_list()
+    generate_metadata()
     pass
