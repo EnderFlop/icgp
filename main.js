@@ -7,6 +7,7 @@ window.addEventListener('DOMContentLoaded', () => {
       .then(response => response.json())
       .then(data => {
         Object.entries(data).forEach(folder => {
+          folder = folder[1] //for each entry we want to use the value not the key
           const folderName = folder["name"]
 
           const folderOuterElement = document.createElement('div');
@@ -14,7 +15,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
           const previewImage = document.createElement('img');
           previewImage.classList.add("previewImage")
-          const previewURL = folder["photos"]["PREVIEW"]["thumbnail_url"]
+          console.log(folder)
+          const previewURL = folder["photos"][0]["thumbnail_url"]
           previewImage.src = previewURL
 
           const folderLinkElement = document.createElement('a');

@@ -17,15 +17,15 @@ window.addEventListener('DOMContentLoaded', () => {
           const outerImageElement = document.createElement('div');
           outerImageElement.classList.add("image")
           
-          const realImageName = photo["name"]
           const linkElement = document.createElement("a")
-          linkElement.href = `piece.html?folder=${folder}&piece=${realImageName}`
+          linkElement.href = `piece.html?url=${photo["full_url"]}`
 
           const imageElement = document.createElement('img')
           imageElement.src = photo["thumbnail_url"]
 
           linkElement.appendChild(imageElement)
           outerImageElement.appendChild(linkElement)
+          container.appendChild(outerImageElement)
         })
       })
       .catch(error => {
