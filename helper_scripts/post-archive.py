@@ -68,8 +68,8 @@ def generate_metadata():
             name = file[:-4] #remove ".jpg"
             folder_url_name = folder.replace(" ", "%20")
             photo_dict["name"] = name
-            photo_dict["thumbnail_url"] = f"https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/photos/{folder_url_name}/{name}_thumbnail.jpeg"
-            photo_dict["full_url"] = f"https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/photos/{folder_url_name}/{name}.jpg"
+            photo_dict["thumbnail_url"] = f"https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/serverless/photos/{folder_url_name}/{name}_thumbnail.jpeg"
+            photo_dict["full_url"] = f"https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/serverless/photos/{folder_url_name}/{name}.jpg"
             artist_dict["photos"].append(photo_dict)
         artist_dict["count"] = photo_count
         all_artists_dict[folder] = artist_dict
