@@ -67,7 +67,7 @@ def delete_thumbnails():
                 os.remove(f".\photos\{dir_name}\{img_file}")
 
 def generate_metadata():
-    all_artists_list = []
+    all_artists_dict = {}
     for folder in os.listdir(".\photos"):
         artist_dict = {}
         artist_dict["name"] = folder
@@ -85,8 +85,8 @@ def generate_metadata():
             photo_dict["full_url"] = f"https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/photos/{folder_url_name}/{name}.jpg"
             artist_dict["photos"].append(photo_dict)
         artist_dict["count"] = photo_count
-        all_artists_list.append(artist_dict)
-    obj = json.dumps(all_artists_list)
+        all_artists_dict[folder] = artist_dict
+    obj = json.dumps(all_artists_dict)
     with open(".\\artist_meta.json", "w") as outfile:
         outfile.write(obj)
 

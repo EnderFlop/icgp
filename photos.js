@@ -8,28 +8,25 @@ window.addEventListener('DOMContentLoaded', () => {
 
   function loadImagesFromFolder(folder){
     container.innerHTML = ''; // Clear the image container before loading new images
-    fetch(`https://tame-vampirebat-36.telebit.io/photos/${folder}`)
+    fetch(`https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/serverless/artist_meta.json`)
       .then(response => response.json())
       .then(data => {
-        data.forEach(image => {
-          const imageName = image["name"]
-          if (imageName.includes(".json") || imageName.includes(".JPG") || imageName.includes(".jpg")){ //skip the non-thumbnail files
-            return
-          }
+        artist_data = data[folder]
+        const photos = artist_data["photos"]
+        photos.forEach(photo => {
           const outerImageElement = document.createElement('div');
           outerImageElement.classList.add("image")
           
-          const realImageName = imageName.split("_thumbnail")[0] + ".jpg"
+          const realImageName = photo["name"]
           const linkElement = document.createElement("a")
           linkElement.href = `piece.html?folder=${folder}&piece=${realImageName}`
 
           const imageElement = document.createElement('img')
-          imageElement.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/photos/${folder}/${imageName}`
+          imageElement.src = photo["thumbnail_url"]
 
           linkElement.appendChild(imageElement)
           outerImageElement.appendChild(linkElement)
-          container.appendChild(outerImageElement);
-        });
+        })
       })
       .catch(error => {
         console.log('Error:', error);
