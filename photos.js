@@ -8,7 +8,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   function loadImagesFromFolder(folder){
     container.innerHTML = ''; // Clear the image container before loading new images
-    fetch(`https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/serverless/artist_meta.json`)
+    fetch(`https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/artist_meta.json`)
       .then(response => response.json())
       .then(data => {
         artist_data = data[folder]

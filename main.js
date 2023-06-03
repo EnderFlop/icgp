@@ -3,7 +3,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Function to load and display folders
   function loadFolders() {
-    fetch('https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/serverless/artist_meta.json')
+    fetch('https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/artist_meta.json')
       .then(response => response.json())
       .then(data => {
         Object.entries(data).forEach(folder => {
