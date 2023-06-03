@@ -4,20 +4,6 @@ from PIL import Image, ImageOps
 
 # A bunch of utilities to run before each commit to generate metadata, thumbnails, and everything else.
 
-def rename_folders():
-    print("Renaming Folders")
-    for dir_name in os.listdir(".\photos"):
-        path = os.path.join(".\photos", dir_name)
-        length = len(os.listdir(path)) // 3 #divided by 3 to remove the .jsons and thumbnail images
-        #If folder has existing length
-        if path[-1:] == ")":
-            starting_index = path.find("(")
-            new_path = path[:starting_index + 1] + str(length) + ")"
-            os.rename(path, new_path)
-        #else, new folder with no preexisting length
-        else:
-            os.rename(path, path + f" ({length})")
-
 def rename_preview():
     print("Renaming Preview Images")
     for dir_name in os.listdir(".\photos"):
@@ -67,6 +53,7 @@ def delete_thumbnails():
                 os.remove(f".\photos\{dir_name}\{img_file}")
 
 def generate_metadata():
+    print("Generating Metadata File")
     all_artists_dict = {}
     for folder in os.listdir(".\photos"):
         artist_dict = {}
@@ -91,10 +78,9 @@ def generate_metadata():
         outfile.write(obj)
 
 if __name__ == "__main__":
-    #rename_preview()
-    #get_rid_of_JPGs()
+    rename_preview()
+    get_rid_of_JPGs()
     #files are renamed BEFORE anything else is generated, keep this order.
-    #generate_thumbnails()
-    #rename_folders()
+    generate_thumbnails()
     generate_metadata()
     pass
