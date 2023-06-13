@@ -2,13 +2,12 @@
   margin:0;
   padding:0;
   box-sizing: border-box;
-  background: #ddd;
 }
 
 .container{
   position: relative;
   min-height: 100vh;
-  background: #ddd;
+  background: #bbb;
 }
 
 .container .logo{
@@ -29,12 +28,7 @@
   padding: 10px;
 }
 
-.container .folderContainer .folderOuterElement {
-  border: 5px solid #616161;
-  border-radius: 10px;
-}
-
-.container .folderContainer .folderOuterElement .previewImage {
+.container .folderContainer .window .window-body .previewImage {
   display: block;
   max-width: 230px;
   max-height: 95px;

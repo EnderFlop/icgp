@@ -9,9 +9,24 @@ window.addEventListener('DOMContentLoaded', () => {
         Object.entries(data).forEach(folder => {
           folder = folder[1] //for each entry we want to use the value not the key
           const folderName = folder["name"]
+          const imgCount = folder["count"]
 
-          const folderOuterElement = document.createElement('div');
-          folderOuterElement.classList.add("folderOuterElement");
+          const window = document.createElement('div');
+          window.classList.add("window");
+          window.style = "width: 150px"
+          
+          const titleBar = document.createElement("div");
+          titleBar.classList.add("title-bar")
+
+          const titleBarText = document.createElement('div');
+          titleBarText.classList.add("title-bar-text")
+          titleBarText.innerText = folderName + ": " + imgCount + (imgCount > 1 ? " tags" : " tag")
+
+          titleBar.appendChild(titleBarText)
+          window.appendChild(titleBar)
+
+          const windowBody = document.createElement('div');
+          windowBody.classList.add("window-body")
 
           const previewImage = document.createElement('img');
           previewImage.classList.add("previewImage")
@@ -21,11 +36,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
           const folderLinkElement = document.createElement('a');
           folderLinkElement.href = 'photos.html?folder=' + folderName;
-          folderLinkElement.innerText = folderName;
-          
-          folderOuterElement.appendChild(previewImage)
-          folderOuterElement.appendChild(folderLinkElement)
-          folderContainer.appendChild(folderOuterElement);
+
+          const button = document.createElement("button");
+          button.innerText = "See Tags"
+
+          folderLinkElement.appendChild(button)
+
+          windowBody.appendChild(previewImage)
+          windowBody.appendChild(folderLinkElement)
+          window.appendChild(windowBody)
+          folderContainer.appendChild(window);
         });
       })
       .catch(error => {
