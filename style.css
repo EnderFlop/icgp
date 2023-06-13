@@ -11,14 +11,14 @@
   background: #ddd;
 }
 
-.container h1{
-  font-size: 40px;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-weight: normal;
-  padding: 15px;
-  color: #333;
-  text-align: center;
-  text-transform: capitalize;
+.container .logo{
+  display: flex;
+  justify-content: center;
+}
+
+.container .logo img{
+  width: 30%;
+  height: auto;
 }
 
 .container .folderContainer {
