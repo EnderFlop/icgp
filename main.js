@@ -8,10 +8,12 @@ window.addEventListener('DOMContentLoaded', () => {
     var logoChoice = Math.floor(Math.random() * logoCount)//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 
     //if the random logo was the last one seen, change it.
-    let currentLogo = Number(localStorage.getItem("logoId")) || -1
+    let currentLogo = Number(localStorage.getItem("logoId")) || 0
+    console.log("logo choice: " + logoChoice + "current logo: " + currentLogo)
     if (logoChoice == currentLogo){
       logoChoice += 1
       if (logoChoice == logoCount) {logoChoice = 0}
+      console.log("new logo choice: " + logoChoice)
     }
     localStorage.setItem("logoId", logoChoice)
 
