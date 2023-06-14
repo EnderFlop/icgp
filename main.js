@@ -1,8 +1,25 @@
 window.addEventListener('DOMContentLoaded', () => {
   const folderContainer = document.querySelector('.folderContainer');
 
+  function loadLogo() {
+    const logoElem = document.querySelector("#logo-img")
+    const logoCount = 4 //CHANGE WHEN ADDING NEW LOGOS
+
+    var logoChoice = Math.floor(Math.random() * logoCount)//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+
+    //if the random logo was the last one seen, change it.
+    let currentLogo = Number(localStorage.getItem("logoId")) || -1
+    if (logoChoice == currentLogo){
+      logoChoice += 1
+      if (logoChoice == logoCount) {logoChoice = 0}
+    }
+    localStorage.setItem("logoId", logoChoice)
+
+    logoElem.src = `./media/logo${logoChoice}.png`
+  }
+
+
   function filterByTagCount(artists) {
-    artists.forEach(a => {console.log(a[1]["count"])})
     artists.sort(function(a, b){return b[1]["count"] - a[1]["count"];})
     return artists
   }
@@ -37,7 +54,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
           const previewImage = document.createElement('img');
           previewImage.classList.add("previewImage")
-          console.log(folder)
           const previewURL = folder["photos"][0]["thumbnail_url"]
           previewImage.src = previewURL
 
@@ -60,5 +76,7 @@ window.addEventListener('DOMContentLoaded', () => {
       });
   }
 
+  loadLogo()
   loadFolders()
+  
 })

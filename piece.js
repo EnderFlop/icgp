@@ -4,7 +4,6 @@ window.addEventListener('DOMContentLoaded', () => {
   const metaList = document.querySelector("#metadata-list")
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
-
   
   loadPiece()
 
@@ -29,9 +28,5 @@ window.addEventListener('DOMContentLoaded', () => {
               metaList.appendChild(listElem)
             })
     })
-
-    //ok, we have the description in a json. do something with it.
-    
-    
-    }
+  }
 })
