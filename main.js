@@ -12,8 +12,8 @@ window.addEventListener('DOMContentLoaded', () => {
     fetch('https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/artist_meta.json')
       .then(response => response.json())
       .then(data => {
-        const sortedJson = filterByTagCount(Object.entries(data))
-        sortedJson.forEach(folder => {
+        const sortedArtists = filterByTagCount(Object.entries(data))
+        sortedArtists.forEach(folder => {
           folder = folder[1] //for each entry we want to use the value not the key
           const folderName = folder["name"]
           const imgCount = folder["count"]

@@ -1,27 +1,37 @@
 window.addEventListener('DOMContentLoaded', () => {
-  const container = document.querySelector('.pieceContainer');
+  const photoWindowBody = document.querySelector("#photo-window-body")
+  const photoTitleBarText = document.querySelector("#photo-title-bar-text")
+  const metaList = document.querySelector("#metadata-list")
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
-  const url = urlParams.get("url");
+
   
   loadPiece()
 
   function loadPiece(){
-    container.innerHTML = ""
+    const artist = urlParams.get("artist");
+    const imgName = urlParams.get("imgName");
 
-    const outerImageElement = document.createElement('div')
-    outerImageElement.classList.add("image")
-
+    //first, add the image
     const imageElement = document.createElement('img')
-    imageElement.src = url
+    imageElement.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/photos/${artist}/${imgName}.jpg`
+    photoWindowBody.appendChild(imageElement)
 
-    //const descriptionElement = document.createElement("ul")
-    //const imageName = piece.split(".")[0]
-    //const imageDescription = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/photos/${folder}/${imageName}.json`
+    //then, get the metadata
+    fetch(`https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/photos/${artist}/${imgName}.json`)
+          .then(response => response.json())
+          .then(data => {
+            console.log(data)
+            photoTitleBarText.innerHTML = data["img_name"]
+            Object.entries(data).forEach(item => {
+              const listElem = document.createElement("li")
+              listElem.innerHTML = item[0] + ": " + (item[1] ? item[1] : "N/A")
+              metaList.appendChild(listElem)
+            })
+    })
+
     //ok, we have the description in a json. do something with it.
     
-    outerImageElement.appendChild(imageElement)
-
-    container.appendChild(outerImageElement)
+    
     }
 })
