@@ -1,12 +1,19 @@
 window.addEventListener('DOMContentLoaded', () => {
   const folderContainer = document.querySelector('.folderContainer');
 
+  function filterByTagCount(artists) {
+    artists.forEach(a => {console.log(a[1]["count"])})
+    artists.sort(function(a, b){return b[1]["count"] - a[1]["count"];})
+    return artists
+  }
+
   // Function to load and display folders
   function loadFolders() {
     fetch('https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/artist_meta.json')
       .then(response => response.json())
       .then(data => {
-        Object.entries(data).forEach(folder => {
+        const sortedJson = filterByTagCount(Object.entries(data))
+        sortedJson.forEach(folder => {
           folder = folder[1] //for each entry we want to use the value not the key
           const folderName = folder["name"]
           const imgCount = folder["count"]

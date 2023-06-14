@@ -13,6 +13,7 @@
 .container .logo{
   display: flex;
   justify-content: center;
+  padding: 10px;
 }
 
 .container .logo img{
