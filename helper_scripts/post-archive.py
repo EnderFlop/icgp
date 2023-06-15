@@ -1,6 +1,7 @@
 import os
 import json
 from PIL import Image, ImageOps
+from get_image_metadata import get_lat_long
 
 # A bunch of utilities to run before each commit to generate metadata, thumbnails, and everything else.
 
@@ -66,10 +67,10 @@ def generate_metadata():
                 continue
             photo_count += 1
             name = file[:-4] #remove ".jpg"
-            folder_url_name = folder.replace(" ", "%20")
             photo_dict["name"] = name
-            photo_dict["thumbnail_url"] = f"https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/photos/{folder_url_name}/{name}_thumbnail.jpeg"
-            photo_dict["full_url"] = f"https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/photos/{folder_url_name}/{name}.jpg"
+            lat, lon = get_lat_long(f".\photos\{folder}\{file}")
+            photo_dict["lat"] = lat
+            photo_dict["lon"] = lon
             artist_dict["photos"].append(photo_dict)
         artist_dict["count"] = photo_count
         all_artists_dict[folder] = artist_dict

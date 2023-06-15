@@ -42,7 +42,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
           const window = document.createElement('div');
           window.classList.add("window");
-          window.style = "width: 150px"
           
           const titleBar = document.createElement("div");
           titleBar.classList.add("title-bar")
@@ -59,7 +58,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
           const previewImage = document.createElement('img');
           previewImage.classList.add("previewImage")
-          const previewURL = folder["photos"][0]["thumbnail_url"]
+          const previewURL = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/photos/${folderName}/PREVIEW_thumbnail.jpeg`
           previewImage.src = previewURL
 
           const folderLinkElement = document.createElement('a');

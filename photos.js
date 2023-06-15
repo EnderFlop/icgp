@@ -40,7 +40,7 @@ window.addEventListener('DOMContentLoaded', () => {
           linkElement.href = `piece.html?artist=${artistName}&imgName=${photo["name"]}`
 
           const imageElement = document.createElement('img')
-          imageElement.src = photo["thumbnail_url"]
+          imageElement.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/photos/${artistName}/${photo["name"]}_thumbnail.jpeg`
 
           linkElement.appendChild(imageElement)
           outerImageElement.appendChild(linkElement)
