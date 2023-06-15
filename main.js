@@ -31,7 +31,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Function to load and display folders
   function loadFolders() {
-    fetch('https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/artist_meta.json')
+    fetch('https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/artist_meta.json')
       .then(response => response.json())
       .then(data => {
         const sortedArtists = filterByTagCount(Object.entries(data))
@@ -58,7 +58,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
           const previewImage = document.createElement('img');
           previewImage.classList.add("previewImage")
-          const previewURL = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/photos/${folderName}/PREVIEW_thumbnail.jpeg`
+          const previewURL = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/photos/${folderName}/PREVIEW_thumbnail.jpeg`
           previewImage.src = previewURL
 
           const folderLinkElement = document.createElement('a');

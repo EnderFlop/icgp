@@ -34,7 +34,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const artist = urlParams.get("artist");
     const imgName = urlParams.get("imgName");
 
-    fetch('https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/artist_meta.json')
+    fetch('https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/artist_meta.json')
         .then(response => response.json())
         .then(async data => {
           photos = data[artist]["photos"]

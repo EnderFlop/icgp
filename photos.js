@@ -9,7 +9,7 @@ window.addEventListener('DOMContentLoaded', () => {
   function loadImagesFromFolder(folder){
     //first, load all the images
     container.innerHTML = ''; // Clear the image container before loading new images
-    fetch(`https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/artist_meta.json`)
+    fetch(`https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/artist_meta.json`)
       .then(response => response.json())
       .then(data => {
         artist_data = data[folder]
@@ -40,7 +40,7 @@ window.addEventListener('DOMContentLoaded', () => {
           linkElement.href = `piece.html?artist=${artistName}&imgName=${photo["name"]}`
 
           const imageElement = document.createElement('img')
-          imageElement.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/photos/${artistName}/${photo["name"]}_thumbnail.jpeg`
+          imageElement.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/photos/${artistName}/${photo["name"]}_thumbnail.jpeg`
 
           linkElement.appendChild(imageElement)
           outerImageElement.appendChild(linkElement)
@@ -49,7 +49,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
           //then, load the metadata
           //horribly inefficient, will likely add data to artist_meta eventually. have to reduce json size first.
-          fetch(`https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/photos/${artist_data['name']}/${photo["name"]}.json`)
+          fetch(`https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/main/photos/${artist_data['name']}/${photo["name"]}.json`)
           .then(response => response.json())
           .then(data => {
             titleBarText.innerHTML = `${data["location"]}`
