@@ -14,11 +14,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
     //first, add the image
     const imageElement = document.createElement('img')
-    imageElement.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/photos/${artist}/${imgName}.jpg`
+    imageElement.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/photos/${artist}/${imgName}.jpg`
     photoWindowBody.appendChild(imageElement)
 
     //then, get the metadata
-    fetch(`https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti/main/photos/${artist}/${imgName}.json`)
+    fetch(`https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/photos/${artist}/${imgName}.json`)
           .then(response => response.json())
           .then(data => {
             photoTitleBarText.innerHTML = data["img_name"]
@@ -41,11 +41,11 @@ window.addEventListener('DOMContentLoaded', () => {
           myPhoto = photos.find(item => item["name"] === imgName)
           myLat = myPhoto["lat"]
           myLon = myPhoto["lon"]
-          const { Map } = await google.maps.importLibary("maps");
-          map = new Map(document.querySelector("#map-window-body"), {
-            center: {lat: myLat, lng: myLon},
-            zoom: 8
-          })
+          // const { Map } = await google.maps.importLibary("maps");
+          // map = new Map(document.querySelector("#map-window-body"), {
+          //   center: {lat: myLat, lng: myLon},
+          //   zoom: 8
+          // })
     })
   }
 })
