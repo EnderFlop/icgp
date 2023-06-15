@@ -12,13 +12,18 @@
 
 .container .logo{
   display: flex;
-  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   padding: 10px;
 }
 
 .container .logo img{
   width: 30%;
   height: auto;
+}
+
+.container .logo p {
+  margin-left: 420px
 }
 
 .container .folderContainer {
