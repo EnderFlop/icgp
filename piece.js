@@ -33,7 +33,6 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   async function loadMap() {
-    const artist = urlParams.get("artist");
     const imgName = urlParams.get("imgName");
 
     fetch('https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/location_coords.json')
@@ -47,7 +46,7 @@ window.addEventListener('DOMContentLoaded', () => {
           const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
           map = new Map(document.querySelector("#map"), {
             center: position,
-            zoom: 14,
+            zoom: 18,
             mapId: "MAP_ID"
           })
           const marker = new AdvancedMarkerElement({
