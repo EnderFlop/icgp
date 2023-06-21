@@ -74,3 +74,8 @@
 .container .imageContainer .image:hover img{
   transform: scale(1.1)
 }
+
+#map {
+  height: 575px;
+  width: 100%;
+}

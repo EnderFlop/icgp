@@ -37,10 +37,10 @@ window.addEventListener('DOMContentLoaded', () => {
           outerImageElement.classList.add("image")
           
           const linkElement = document.createElement("a")
-          linkElement.href = `piece.html?artist=${artistName}&imgName=${photo["name"]}`
+          linkElement.href = `piece.html?artist=${artistName}&imgName=${photo}`
 
           const imageElement = document.createElement('img')
-          imageElement.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/photos/${artistName}/${photo["name"]}_thumbnail.jpeg`
+          imageElement.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/photos/${artistName}/${photo}_thumbnail.jpeg`
 
           linkElement.appendChild(imageElement)
           outerImageElement.appendChild(linkElement)
@@ -49,7 +49,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
           //then, load the metadata
           //horribly inefficient, will likely add data to artist_meta eventually. have to reduce json size first.
-          fetch(`https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/main/photos/${artist_data['name']}/${photo["name"]}.json`)
+          fetch(`https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/photos/${artist_data['name']}/${photo}.json`)
           .then(response => response.json())
           .then(data => {
             titleBarText.innerHTML = `${data["location"]}`

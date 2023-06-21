@@ -7,6 +7,7 @@ window.addEventListener('DOMContentLoaded', () => {
   
   loadPiece()
   loadMap()
+  var location;
 
   function loadPiece(){
     const artist = urlParams.get("artist");
@@ -21,6 +22,7 @@ window.addEventListener('DOMContentLoaded', () => {
     fetch(`https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/photos/${artist}/${imgName}.json`)
           .then(response => response.json())
           .then(data => {
+            location = data["location"]
             photoTitleBarText.innerHTML = data["img_name"]
             Object.entries(data).forEach(item => {
               const listElem = document.createElement("li")
@@ -34,18 +36,25 @@ window.addEventListener('DOMContentLoaded', () => {
     const artist = urlParams.get("artist");
     const imgName = urlParams.get("imgName");
 
-    fetch('https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/artist_meta.json')
+    fetch('https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/location_coords.json')
         .then(response => response.json())
         .then(async data => {
-          photos = data[artist]["photos"]
-          myPhoto = photos.find(item => item["name"] === imgName)
-          myLat = myPhoto["lat"]
-          myLon = myPhoto["lon"]
-          // const { Map } = await google.maps.importLibary("maps");
-          // map = new Map(document.querySelector("#map-window-body"), {
-          //   center: {lat: myLat, lng: myLon},
-          //   zoom: 8
-          // })
+          coords = data[location]
+          myLat = parseFloat(coords.split(", ")[0])
+          myLon = parseFloat(coords.split(", ")[1])
+          position = {lat: myLat, lng: myLon}
+          const { Map } = await google.maps.importLibrary("maps");
+          const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+          map = new Map(document.querySelector("#map"), {
+            center: position,
+            zoom: 14,
+            mapId: "MAP_ID"
+          })
+          const marker = new AdvancedMarkerElement({
+            map: map,
+            position: position,
+            title: imgName,
+          });
     })
   }
 })
