@@ -5,14 +5,13 @@ window.addEventListener('DOMContentLoaded', () => {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   
+  const artist = urlParams.get("artist");
+  const imgName = urlParams.get("imgName");
   loadPiece()
   loadMap()
   var location;
 
   function loadPiece(){
-    const artist = urlParams.get("artist");
-    const imgName = urlParams.get("imgName");
-
     //first, add the image
     const imageElement = document.createElement('img')
     imageElement.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/photos/${artist}/${imgName}.jpg`
@@ -33,8 +32,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   async function loadMap() {
-    const imgName = urlParams.get("imgName");
-
+    //get the coords and plot the image's marker
     fetch('https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/location_coords.json')
         .then(response => response.json())
         .then(async data => {
@@ -45,6 +43,7 @@ window.addEventListener('DOMContentLoaded', () => {
           const { Map } = await google.maps.importLibrary("maps");
           const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
           map = new Map(document.querySelector("#map"), {
+            mapTypeId: "satellite",
             center: position,
             zoom: 18,
             mapId: "MAP_ID"

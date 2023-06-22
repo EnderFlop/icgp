@@ -4,15 +4,37 @@ window.addEventListener('DOMContentLoaded', () => {
   const urlParams = new URLSearchParams(queryString);
   const folder = urlParams.get("folder");
 
-  loadImagesFromFolder(folder)
 
-  function loadImagesFromFolder(folder){
+  let location_coords;
+  loadCoordData()
+
+  function loadCoordData(){
+    fetch('https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/location_coords.json')
+    .then(response => response.json())
+    .then(data => {
+      location_coords = data
+    })
+    .then(loadImagesFromFolder())
+  }
+
+  function loadImagesFromFolder(){
     //first, load all the images
     container.innerHTML = ''; // Clear the image container before loading new images
     fetch(`https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/artist_meta.json`)
       .then(response => response.json())
-      .then(data => {
+      .then(async data => {
         artist_data = data[folder]
+
+        const { Map } = await google.maps.importLibrary("maps");
+        const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary("marker");
+
+        map = new Map(document.querySelector("#map"), {
+          mapTypeId: "satellite",
+          center: {lat: 41.66011976254432, lng:-91.53466100556186},
+          zoom: 15,
+          mapId: "MAP_ID"
+        })
+        let tag_locations = {}
 
         const titleBarText = document.querySelector(".title-bar-text")
         const artistName = artist_data["name"]
@@ -45,19 +67,40 @@ window.addEventListener('DOMContentLoaded', () => {
           linkElement.appendChild(imageElement)
           outerImageElement.appendChild(linkElement)
           window.append(outerImageElement)
-          
 
           //then, load the metadata
           //horribly inefficient, will likely add data to artist_meta eventually. have to reduce json size first.
+          
           fetch(`https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/photos/${artist_data['name']}/${photo}.json`)
           .then(response => response.json())
           .then(data => {
-            titleBarText.innerHTML = `${data["location"]}`
+            loc = data["location"]
+            titleBarText.innerHTML = `${loc}`
+            if (loc in tag_locations){
+              tag_locations[loc] += 1
+            }
+            else { tag_locations[loc] = 1}
           })
 
           container.append(window)
-
         })
+        console.log(tag_locations)
+        console.log(Object.entries(tag_locations))
+        Object.entries(tag_locations).forEach(item => {
+          const location = item[0]
+          const count = item[1]
+
+          const coords = location_coords[location]
+          myLat = parseFloat(coords.split(", ")[0])
+          myLon = parseFloat(coords.split(", ")[1])
+          position = {lat: myLat, lng: myLon}
+          const marker = new AdvancedMarkerElement({
+            map: map,
+            position: position,
+            content: new PinElement({"glyph": count})
+          });
+        })
+    
       })
       .catch(error => {
         console.log('Error:', error);
