@@ -11,6 +11,8 @@ window.addEventListener('DOMContentLoaded', () => {
     loadCoordData()
     let tag_locations = {}
     await loadImagesFromFolder(tag_locations)
+    console.log(JSON.stringify(tag_locations))
+    await new Promise(r => setTimeout(r, 1000));
     putDataOnMap(tag_locations)
   }
 
@@ -33,7 +35,6 @@ window.addEventListener('DOMContentLoaded', () => {
         artist_data = data[folder]
 
         const { Map } = await google.maps.importLibrary("maps");
-        const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary("marker");
 
         map = new Map(document.querySelector("#map"), {
           mapTypeId: "satellite",
@@ -89,7 +90,7 @@ window.addEventListener('DOMContentLoaded', () => {
             else {          
               tag_locations[loc] = 1
             }
-            
+            console.log(JSON.stringify(tag_locations))
           })
           container.append(window)
         })
@@ -99,14 +100,17 @@ window.addEventListener('DOMContentLoaded', () => {
       });
   }
 
-  function putDataOnMap(tag_locations) {
+  async function putDataOnMap(tag_locations) {
     console.log('putting data on map')
     console.log(tag_locations)
 
-    //NEVER ENTERED, LIST IS LENGTH 0 
+    const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary("marker");
+
     Object.entries(tag_locations).forEach(item => {
       const location = item[0]
       const count = item[1]
+
+      const content = new PinElement({"glyph": `${count}`})
 
       const coords = location_coords[location]
       myLat = parseFloat(coords.split(", ")[0])
@@ -115,7 +119,7 @@ window.addEventListener('DOMContentLoaded', () => {
       const marker = new AdvancedMarkerElement({
         map: map,
         position: position,
-        content: new PinElement({"glyph": count})
+        content: content.element
       });
     })
   }
