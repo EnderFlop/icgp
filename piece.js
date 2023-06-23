@@ -17,6 +17,11 @@ window.addEventListener('DOMContentLoaded', () => {
     imageElement.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/photos/${artist}/${imgName}.jpg`
     photoWindowBody.appendChild(imageElement)
 
+    //then, add the back button
+    const artist_url = `https://enderflop.github.io/iowacitygraffiti/photos.html?folder=${artist}`
+    document.getElementById("back-button").onclick = function () {window.location.href=artist_url;}
+    
+
     //then, get the metadata
     fetch(`https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/photos/${artist}/${imgName}.json`)
           .then(response => response.json())
