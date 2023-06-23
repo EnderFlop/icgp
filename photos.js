@@ -4,23 +4,30 @@ window.addEventListener('DOMContentLoaded', () => {
   const urlParams = new URLSearchParams(queryString);
   const folder = urlParams.get("folder");
 
-
-  let location_coords;
-  loadCoordData()
+  main()
+  
+  async function main(){
+    let location_coords;
+    loadCoordData()
+    let tag_locations = {}
+    await loadImagesFromFolder(tag_locations)
+    putDataOnMap(tag_locations)
+  }
 
   function loadCoordData(){
+    console.log("loading coord data")
     fetch('https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/location_coords.json')
     .then(response => response.json())
     .then(data => {
       location_coords = data
     })
-    .then(loadImagesFromFolder())
   }
 
-  function loadImagesFromFolder(){
+  function loadImagesFromFolder(tag_locations){
+    console.log('loading images')
     //first, load all the images
     container.innerHTML = ''; // Clear the image container before loading new images
-    fetch(`https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/artist_meta.json`)
+    return fetch(`https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/artist_meta.json`)
       .then(response => response.json())
       .then(async data => {
         artist_data = data[folder]
@@ -34,7 +41,7 @@ window.addEventListener('DOMContentLoaded', () => {
           zoom: 15,
           mapId: "MAP_ID"
         })
-        let tag_locations = {}
+        
 
         const titleBarText = document.querySelector(".title-bar-text")
         const artistName = artist_data["name"]
@@ -79,31 +86,37 @@ window.addEventListener('DOMContentLoaded', () => {
             if (loc in tag_locations){
               tag_locations[loc] += 1
             }
-            else { tag_locations[loc] = 1}
+            else {          
+              tag_locations[loc] = 1
+            }
+            
           })
-
           container.append(window)
         })
-        console.log(tag_locations)
-        console.log(Object.entries(tag_locations))
-        Object.entries(tag_locations).forEach(item => {
-          const location = item[0]
-          const count = item[1]
-
-          const coords = location_coords[location]
-          myLat = parseFloat(coords.split(", ")[0])
-          myLon = parseFloat(coords.split(", ")[1])
-          position = {lat: myLat, lng: myLon}
-          const marker = new AdvancedMarkerElement({
-            map: map,
-            position: position,
-            content: new PinElement({"glyph": count})
-          });
-        })
-    
       })
       .catch(error => {
         console.log('Error:', error);
       });
+  }
+
+  function putDataOnMap(tag_locations) {
+    console.log('putting data on map')
+    console.log(tag_locations)
+
+    //NEVER ENTERED, LIST IS LENGTH 0 
+    Object.entries(tag_locations).forEach(item => {
+      const location = item[0]
+      const count = item[1]
+
+      const coords = location_coords[location]
+      myLat = parseFloat(coords.split(", ")[0])
+      myLon = parseFloat(coords.split(", ")[1])
+      position = {lat: myLat, lng: myLon}
+      const marker = new AdvancedMarkerElement({
+        map: map,
+        position: position,
+        content: new PinElement({"glyph": count})
+      });
+    })
   }
 })
