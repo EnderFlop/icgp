@@ -11,7 +11,6 @@ window.addEventListener('DOMContentLoaded', () => {
     loadCoordData()
     let tag_locations = {}
     await loadImagesFromFolder(tag_locations)
-    console.log(JSON.stringify(tag_locations))
     await new Promise(r => setTimeout(r, 1000));
     putDataOnMap(tag_locations)
   }
@@ -90,7 +89,6 @@ window.addEventListener('DOMContentLoaded', () => {
             else {          
               tag_locations[loc] = 1
             }
-            console.log(JSON.stringify(tag_locations))
           })
           container.append(window)
         })
@@ -102,7 +100,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
   async function putDataOnMap(tag_locations) {
     console.log('putting data on map')
-    console.log(tag_locations)
 
     const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary("marker");
 
@@ -119,8 +116,37 @@ window.addEventListener('DOMContentLoaded', () => {
       const marker = new AdvancedMarkerElement({
         map: map,
         position: position,
-        content: content.element
+        content: content.element,
+        title: location
       });
+      marker.addListener("click", ({domEvent, latLng}) => {
+        console.log(location_coords)
+        coordString = `${latLng.lat()}, ${latLng.lng()}`
+        currentLocation = Object.keys(location_coords).find(key => location_coords[key] == coordString)
+        reorderPhotos(currentLocation)
+      })
+    })
+  }
+
+  function reorderPhotos(location) {
+    const allChildren = document.querySelectorAll(".imageContainer .window")
+    container.innerHTML = ""
+    const sortYes = []
+    const sortNo = []
+    allChildren.forEach(child => {
+      const tempLoc = child.querySelector(".title-bar-text").innerText
+      if (tempLoc == location) {
+        sortYes.push(child)
+        child.querySelector("img").style.border = "5px solid #000080"
+      }
+      else {
+        sortNo.push(child)
+        child.querySelector("img").style.border = ""
+      }
+    })
+    const together = sortYes.concat(sortNo)
+    together.forEach(child => {
+      container.appendChild(child)
     })
   }
 })
