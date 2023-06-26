@@ -18,7 +18,9 @@
 }
 
 .container .logo img{
-  width: 30%;
+  max-width: 400px;
+  max-height: auto;
+  width: auto;
   height: auto;
 }
 
@@ -78,4 +80,17 @@
 #map {
   height: 575px;
   width: 100%;
+}
+
+.gm-style-iw-d {
+  overflow: hidden !important; 
+  position: relative;
+  line-height: 1.35;
+  white-space: nowrap;
+  bottom: 5px;
+  right: 6px;
+}
+
+.gm-ui-hover-effect {
+  display: none !important;
 }

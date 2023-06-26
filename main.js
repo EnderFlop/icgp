@@ -2,6 +2,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const folderContainer = document.querySelector('.folderContainer');
 
   function loadLogo() {
+    console.log("loading logo")
     const logoElem = document.querySelector("#logo-img")
     const logoCount = 4 //CHANGE WHEN ADDING NEW LOGOS
 
@@ -17,12 +18,11 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     localStorage.setItem("logoId", logoChoice)
 
-    const logoText = document.querySelector("#logo-text")
+    const logoText = document.querySelector("#logo-title-bar-text")
     logoText.innerHTML = `Logo ${logoChoice + 1} of ${logoCount}`
 
     logoElem.src = `./media/logo${logoChoice}.png`
   }
-
 
   function filterByTagCount(artists) {
     artists.sort(function(a, b){return b[1]["count"] - a[1]["count"];})
@@ -31,6 +31,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Function to load and display folders
   function loadFolders() {
+    console.log("loading folders")
     fetch('https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/artist_meta.json')
       .then(response => response.json())
       .then(data => {
@@ -80,7 +81,50 @@ window.addEventListener('DOMContentLoaded', () => {
       });
   }
 
+  async function loadMap() {
+    console.log("loading map")
+
+    const { Map, InfoWindow } = await google.maps.importLibrary("maps");
+
+    const map = new Map(document.querySelector("#map"), {
+      mapTypeId: "satellite",
+      center: {lat: 41.66011976254432, lng:-91.53466100556186},
+      zoom: 15,
+      mapId: "MAP_ID"
+    })
+
+    const infoWindow = new InfoWindow()
+
+    const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary("marker");
+
+    fetch('https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/location_coords.json')
+    .then(res => res.json())
+    .then(data => {
+      Object.entries(data).forEach(location => {
+        const locationName = location[0]
+        const coords = location[1]
+        const myLat = parseFloat(coords.split(", ")[0])
+        const myLon = parseFloat(coords.split(", ")[1])
+        const position = {lat: myLat, lng: myLon}
+        const dummyTagCount = Math.floor(Math.random() * 50) //will eventually be placed in the location_coords
+        const content = new PinElement({"glyph": `${dummyTagCount}`})
+    
+        const marker = new AdvancedMarkerElement({
+          map: map,
+          position: position,
+          content: content.element,
+          title: locationName
+        });
+        marker.addListener("click", ({domEvent, latLng}) => {
+          infoWindow.close()
+          infoWindow.setContent(marker.title)
+          infoWindow.open(marker.map, marker)
+        })
+      })
+    })
+  }
+
   loadLogo()
   loadFolders()
-  
+  loadMap()
 })
