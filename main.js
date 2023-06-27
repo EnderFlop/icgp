@@ -102,12 +102,14 @@ window.addEventListener('DOMContentLoaded', () => {
     .then(data => {
       Object.entries(data).forEach(location => {
         const locationName = location[0]
-        const coords = location[1]
+        
+        const coords = location[1]["lat_long"]
         const myLat = parseFloat(coords.split(", ")[0])
         const myLon = parseFloat(coords.split(", ")[1])
+
+        const count = location[1]["count"]
         const position = {lat: myLat, lng: myLon}
-        const dummyTagCount = Math.floor(Math.random() * 50) //will eventually be placed in the location_coords
-        const content = new PinElement({"glyph": `${dummyTagCount}`})
+        const content = new PinElement({"glyph": `${count}`})
     
         const marker = new AdvancedMarkerElement({
           map: map,
