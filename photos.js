@@ -126,7 +126,7 @@ window.addEventListener('DOMContentLoaded', () => {
       marker.addListener("click", ({domEvent, latLng}) => {
         console.log(location_coords)
         coordString = `${latLng.lat()}, ${latLng.lng()}`
-        currentLocation = Object.keys(location_coords).find(key => location_coords[key] == coordString)
+        currentLocation = Object.keys(location_coords).find(key => location_coords[key]["lat_long"] == coordString)
         reorderPhotos(currentLocation)
       })
     })
@@ -134,6 +134,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   function reorderPhotos(location) {
     console.log("reordering photos")
+    console.log(location)
     const allChildren = document.querySelectorAll(".imageContainer .window")
     container.innerHTML = ""
     const sortYes = []
