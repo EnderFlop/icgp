@@ -41,7 +41,7 @@ window.addEventListener('DOMContentLoaded', () => {
     fetch('https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/location_coords.json')
         .then(response => response.json())
         .then(async data => {
-          coords = data[location]
+          coords = data[location]["lat_long"]
           myLat = parseFloat(coords.split(", ")[0])
           myLon = parseFloat(coords.split(", ")[1])
           position = {lat: myLat, lng: myLon}
