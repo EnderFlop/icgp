@@ -3,16 +3,19 @@ window.addEventListener('DOMContentLoaded', () => {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const folder = urlParams.get("folder");
+  const location = urlParams.get("location")
 
   main()
   
   async function main(){
-    let location_coords;
     loadCoordData()
     let tag_locations = {}
     await loadImagesFromFolder(tag_locations)
     await new Promise(r => setTimeout(r, 1000));
     putDataOnMap(tag_locations)
+    if (location) {
+      reorderPhotos(location)
+    }
   }
 
   function loadCoordData(){
@@ -34,63 +37,64 @@ window.addEventListener('DOMContentLoaded', () => {
         artist_data = data[folder]
 
         const { Map } = await google.maps.importLibrary("maps");
-
         map = new Map(document.querySelector("#map"), {
           mapTypeId: "satellite",
           center: {lat: 41.66011976254432, lng:-91.53466100556186},
           zoom: 15,
           mapId: "MAP_ID"
         })
-        
 
         const titleBarText = document.querySelector(".title-bar-text")
         const artistName = artist_data["name"]
         titleBarText.innerHTML = `ARTIST: ${artistName}`
 
         const photos = artist_data["photos"]
-        photos.forEach(photo => {
-          const window = document.createElement('div');
-          window.classList.add("window");
-          window.style = "width: 250px"
 
-          const titleBar = document.createElement("div");
-          titleBar.classList.add("title-bar")
+        Object.values(photos).forEach(photoList => {
+          photoList.forEach(photo => {
+            const window = document.createElement('div');
+            window.classList.add("window");
+            window.style = "width: 250px"
 
-          const titleBarText = document.createElement('div');
-          titleBarText.classList.add("title-bar-text")
+            const titleBar = document.createElement("div");
+            titleBar.classList.add("title-bar")
 
-          titleBar.appendChild(titleBarText)
-          window.appendChild(titleBar)
+            const titleBarText = document.createElement('div');
+            titleBarText.classList.add("title-bar-text")
 
-          const outerImageElement = document.createElement('div');
-          outerImageElement.classList.add("image")
-          
-          const linkElement = document.createElement("a")
-          linkElement.href = `piece.html?artist=${artistName}&imgName=${photo}`
+            titleBar.appendChild(titleBarText)
+            window.appendChild(titleBar)
 
-          const imageElement = document.createElement('img')
-          imageElement.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/photos/${artistName}/${photo}_thumbnail.jpeg`
+            const outerImageElement = document.createElement('div');
+            outerImageElement.classList.add("image")
+            
+            const linkElement = document.createElement("a")
+            linkElement.href = `piece.html?artist=${artistName}&imgName=${photo}`
 
-          linkElement.appendChild(imageElement)
-          outerImageElement.appendChild(linkElement)
-          window.append(outerImageElement)
+            const imageElement = document.createElement('img')
+            imageElement.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/photos/${artistName}/${photo}_thumbnail.jpeg`
 
-          //then, load the metadata
-          //horribly inefficient, will likely add data to artist_meta eventually. have to reduce json size first.
-          
-          fetch(`https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/photos/${artist_data['name']}/${photo}.json`)
-          .then(response => response.json())
-          .then(data => {
-            loc = data["location"]
-            titleBarText.innerHTML = `${loc}`
-            if (loc in tag_locations){
-              tag_locations[loc] += 1
-            }
-            else {          
-              tag_locations[loc] = 1
-            }
+            linkElement.appendChild(imageElement)
+            outerImageElement.appendChild(linkElement)
+            window.append(outerImageElement)
+
+            //then, load the metadata
+            //horribly inefficient, will likely add data to artist_meta eventually. have to reduce json size first.
+            
+            fetch(`https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/photos/${artist_data['name']}/${photo}.json`)
+            .then(response => response.json())
+            .then(data => {
+              loc = data["location"]
+              titleBarText.innerHTML = `${loc}`
+              if (loc in tag_locations){
+                tag_locations[loc] += 1
+              }
+              else {          
+                tag_locations[loc] = 1
+              }
+            })
+            container.append(window)
           })
-          container.append(window)
         })
       })
       .catch(error => {
@@ -109,7 +113,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
       const content = new PinElement({"glyph": `${count}`})
 
-      const coords = location_coords[location]
+      const coords = location_coords[location]["lat_long"]
       myLat = parseFloat(coords.split(", ")[0])
       myLon = parseFloat(coords.split(", ")[1])
       position = {lat: myLat, lng: myLon}
@@ -129,6 +133,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   function reorderPhotos(location) {
+    console.log("reordering photos")
     const allChildren = document.querySelectorAll(".imageContainer .window")
     container.innerHTML = ""
     const sortYes = []

@@ -66,6 +66,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
           const folderLinkElement = document.createElement('a');
           folderLinkElement.href = 'photos.html?folder=' + folderName;
+          folderLinkElement.id = "folder-link"
 
           const button = document.createElement("button");
           button.innerText = "See Tags"
@@ -143,6 +144,7 @@ window.addEventListener('DOMContentLoaded', () => {
       const metadata = artistObject[1]
       let artistWindow;
       let titleBarText;
+      let folderLinkElement;
       // get the artist's div. n^2, sorry
       for (let i = 0; i < allChildren.length; i++) {
         div = allChildren[i]
@@ -150,16 +152,17 @@ window.addEventListener('DOMContentLoaded', () => {
         if (titleBar.innerHTML.split(":")[0] == artist) {
           artistWindow = div; 
           artistImage = artistWindow.querySelector("img")
+          folderLinkElement = artistWindow.querySelector("#folder-link")
           titleBarText = titleBar;
         }
       }
 
       if (Object.keys(metadata["photos"]).includes(location)) {
-        console.log(Object.keys(metadata["photos"]), location)
         sortYes.push(artistWindow)
         artistImage.style.border = "5px solid #000080"
         artistImage.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/photos/${artist}/${metadata["photos"][location][0]}_thumbnail.jpeg`
         titleBarText.innerHTML = `${artist}: ${metadata["photos"][location].length} tags @ ${location}`
+        folderLinkElement.href = 'photos.html?folder=' + artist + "&location=" + location
       } 
       else {
         sortNo.push(artistWindow)
@@ -171,6 +174,7 @@ window.addEventListener('DOMContentLoaded', () => {
         titleBarText.innerHTML = artist + ": " + artistTagCount + (artistTagCount > 1 ? " tags" : " tag")
         // VVV might not want to go back to preview. Take out?
         artistImage.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/photos/${artist}/PREVIEW_thumbnail.jpeg`
+        folderLinkElement.href = 'photos.html?folder=' + artist
       }
     })
     folderContainer.innerHTML = ""
