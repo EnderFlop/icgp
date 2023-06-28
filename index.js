@@ -1,5 +1,6 @@
 window.addEventListener('DOMContentLoaded', () => {
   const folderContainer = document.querySelector('.folderContainer');
+  let artistData;
 
   function loadLogo() {
     console.log("loading logo")
@@ -36,6 +37,7 @@ window.addEventListener('DOMContentLoaded', () => {
       .then(response => response.json())
       .then(data => {
         const sortedArtists = filterByTagCount(Object.entries(data))
+        artistData = sortedArtists
         sortedArtists.forEach(folder => {
           folder = folder[1] //for each entry we want to use the value not the key
           const folderName = folder["name"]
@@ -120,6 +122,7 @@ window.addEventListener('DOMContentLoaded', () => {
         marker.addListener("click", ({domEvent, latLng}) => {
           infoWindow.close()
           infoWindow.setContent(marker.title)
+          reorderPhotos(marker.title)
           infoWindow.open(marker.map, marker)
         })
       })
@@ -129,4 +132,62 @@ window.addEventListener('DOMContentLoaded', () => {
   loadLogo()
   loadFolders()
   loadMap()
+
+  function reorderPhotos(location) {
+    const allChildren = document.querySelectorAll(".folderContainer .window")
+    const sortYes = []
+    const sortNo = []
+    
+    artistData.forEach(artistObject => {
+      const artist = artistObject[0]
+      const metadata = artistObject[1]
+      let artistWindow;
+      let titleBarText;
+      // get the artist's div. n^2, sorry
+      for (let i = 0; i < allChildren.length; i++) {
+        div = allChildren[i]
+        titleBar = div.querySelector(".title-bar-text")
+        if (titleBar.innerHTML.split(":")[0] == artist) {
+          artistWindow = div; 
+          artistImage = artistWindow.querySelector("img")
+          titleBarText = titleBar;
+        }
+      }
+
+      if (Object.keys(metadata["photos"]).includes(location)) {
+        console.log(Object.keys(metadata["photos"]), location)
+        sortYes.push(artistWindow)
+        artistImage.style.border = "5px solid #000080"
+        artistImage.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/photos/${artist}/${metadata["photos"][location][0]}_thumbnail.jpeg`
+        titleBarText.innerHTML = `${artist}: ${metadata["photos"][location].length} tags @ ${location}`
+      } 
+      else {
+        sortNo.push(artistWindow)
+        artistImage.style.border = ""
+        let artistTagCount = 0
+        for (artistLocation in metadata["photos"]) {
+          artistTagCount += metadata["photos"][artistLocation].length
+        }
+        titleBarText.innerHTML = artist + ": " + artistTagCount + (artistTagCount > 1 ? " tags" : " tag")
+        // VVV might not want to go back to preview. Take out?
+        artistImage.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/photos/${artist}/PREVIEW_thumbnail.jpeg`
+      }
+    })
+    folderContainer.innerHTML = ""
+    sortYes.sort(function(a, b){
+      let titleA = a.querySelector(".title-bar-text").innerHTML
+      titleA = titleA.split(": ")[1]
+      titleA = parseInt(titleA.split(" ")[0])
+    
+      let titleB = b.querySelector(".title-bar-text").innerHTML
+      titleB = titleB.split(": ")[1]
+      titleB = parseInt(titleB.split(" ")[0])
+
+      return titleB - titleA
+    })
+    const together = sortYes.concat(sortNo)
+    together.forEach(child => {
+      folderContainer.appendChild(child)
+    })
+  }
 })
