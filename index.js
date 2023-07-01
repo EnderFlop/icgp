@@ -64,17 +64,14 @@ window.addEventListener('DOMContentLoaded', () => {
           previewImage.classList.add("previewImage")
           const previewURL = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/photos/${folderName}/PREVIEW_thumbnail.jpeg`
           previewImage.src = previewURL
+          previewImage.title = `GOTO: ${folderName}`
 
           const folderLinkElement = document.createElement('a');
           folderLinkElement.href = 'photos.html?folder=' + folderName;
           folderLinkElement.id = "folder-link"
 
-          const button = document.createElement("button");
-          button.innerText = "See Tags"
+          folderLinkElement.appendChild(previewImage)
 
-          folderLinkElement.appendChild(button)
-
-          windowBody.appendChild(previewImage)
           windowBody.appendChild(folderLinkElement)
           window.appendChild(windowBody)
           folderContainer.appendChild(window);
