@@ -1,6 +1,7 @@
 window.addEventListener('DOMContentLoaded', () => {
   const folderContainer = document.querySelector('.folderContainer');
   let artistData;
+  let artistListResetState;
 
   function loadLogo() {
     console.log("loading logo")
@@ -78,6 +79,7 @@ window.addEventListener('DOMContentLoaded', () => {
           window.appendChild(windowBody)
           folderContainer.appendChild(window);
         });
+        artistListResetState = document.querySelectorAll(".folderContainer .window")
       })
       .catch(error => {
         console.log('Error:', error);
@@ -130,38 +132,39 @@ window.addEventListener('DOMContentLoaded', () => {
     })
   }
 
-  loadLogo()
-  loadFolders()
-  loadMap()
+  function getArtistWindow(artist) {
+    // currently O(n). Could give each artist window an id={artist} and query by that? not slow enough to care rn
+    const allChildren = document.querySelectorAll(".folderContainer .window")
+    for (let i = 0; i < allChildren.length; i++) {
+      div = allChildren[i]
+      titleBar = div.querySelector(".title-bar-text")
+      if (titleBar.innerHTML.split(":")[0] == artist) {
+        console.log(div)
+        return div
+      }
+    }
+  }
 
   function reorderPhotos(location) {
-    const allChildren = document.querySelectorAll(".folderContainer .window")
     const sortYes = []
     const sortNo = []
     
     artistData.forEach(artistObject => {
       const artist = artistObject[0]
       const metadata = artistObject[1]
-      let artistWindow;
-      let titleBarText;
-      let folderLinkElement;
+
       // get the artist's div. n^2, sorry
-      for (let i = 0; i < allChildren.length; i++) {
-        div = allChildren[i]
-        titleBar = div.querySelector(".title-bar-text")
-        if (titleBar.innerHTML.split(":")[0] == artist) {
-          artistWindow = div; 
-          artistImage = artistWindow.querySelector("img")
-          folderLinkElement = artistWindow.querySelector("#folder-link")
-          titleBarText = titleBar;
-        }
-      }
+      const realArtistWindow = getArtistWindow(artist); 
+      const artistWindow = realArtistWindow.cloneNode(true)
+      const artistImage = artistWindow.querySelector("img")
+      const folderLinkElement = artistWindow.querySelector("#folder-link")
+      const titleBarText = artistWindow.querySelector(".title-bar-text");
 
       if (Object.keys(metadata["photos"]).includes(location)) {
         sortYes.push(artistWindow)
         artistImage.style.border = "5px solid #000080"
         artistImage.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/photos/${artist}/${metadata["photos"][location][0]}_thumbnail.jpeg`
-        titleBarText.innerHTML = `${artist}: ${metadata["photos"][location].length} tags @ ${location}`
+        titleBarText.innerHTML = `${artist}: ${metadata["photos"][location].length} @ ${location}`
         folderLinkElement.href = 'photos.html?folder=' + artist + "&location=" + location
       } 
       else {
@@ -192,6 +195,17 @@ window.addEventListener('DOMContentLoaded', () => {
     const together = sortYes.concat(sortNo)
     together.forEach(child => {
       folderContainer.appendChild(child)
+    })
+  }
+
+  loadLogo()
+  loadFolders()
+  loadMap()
+  const resetButton = document.getElementById("reset-button")
+  resetButton.onclick = function(){
+    folderContainer.innerHTML = ""
+    artistListResetState.forEach(node => {
+      folderContainer.appendChild(node)
     })
   }
 })
