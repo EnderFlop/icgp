@@ -36,6 +36,7 @@
 }
 
 .folderContainer .window {
+  position: relative;
   width: 15%;
   height: 175px;
 }
@@ -49,6 +50,10 @@
   transform: scale(1.05);
 }
 
+.container .window .window-body:hover .flair{
+  visibility: visible;
+}
+
 .container .window .window-body:hover #map img{
   transform: none;
 }
@@ -59,6 +64,16 @@
   height: 100%;
   max-width: 100%;
   max-height: 100%;
+}
+
+.flair {
+  visibility: hidden;
+  position: absolute;
+  z-index: 100;
+  bottom: -10px;
+  right: 0px;
+  height: 100%;
+  width: 100%;
 }
 
 #map {
@@ -75,7 +90,6 @@
   max-width: 100%; 
   max-height: 100%;
 }
-
 
 /* Special Homepage changes */
 

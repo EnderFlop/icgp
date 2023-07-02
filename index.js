@@ -47,6 +47,11 @@ window.addEventListener('DOMContentLoaded', () => {
           const window = document.createElement('div');
           window.classList.add("window");
           
+          const flair = document.createElement('img');
+          flair.classList.add("flair")
+          flair.classList.add("twitching")
+          flair.src = "./media/flair.png"
+
           const titleBar = document.createElement("div");
           titleBar.classList.add("title-bar")
 
@@ -71,6 +76,7 @@ window.addEventListener('DOMContentLoaded', () => {
           folderLinkElement.id = "folder-link"
 
           folderLinkElement.appendChild(previewImage)
+          folderLinkElement.appendChild(flair)
 
           windowBody.appendChild(folderLinkElement)
           window.appendChild(windowBody)
@@ -198,6 +204,7 @@ window.addEventListener('DOMContentLoaded', () => {
   loadLogo()
   loadFolders()
   loadMap()
+
   const resetButton = document.getElementById("reset-button")
   resetButton.onclick = function(){
     folderContainer.innerHTML = ""
@@ -205,4 +212,20 @@ window.addEventListener('DOMContentLoaded', () => {
       folderContainer.appendChild(node)
     })
   }
+
+  let forward = true
+  let lastCall;
+  rotateTwitchers()
+  function rotateTwitchers(){
+    const twitchers = document.querySelectorAll(".twitching")
+    twitchers.forEach(div => {
+      rotationAmount = (forward ? "5deg" : "-5deg")
+      div.style.transform = `rotate(${rotationAmount})`
+    })
+    clearTimeout(lastCall)
+    lastCall = setTimeout(rotateTwitchers, 500)
+    forward = !forward
+  }
+
+
 })

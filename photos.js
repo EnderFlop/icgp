@@ -15,6 +15,21 @@ window.addEventListener('DOMContentLoaded', () => {
       container.appendChild(node)
     })
   }
+
+  let forward = true
+  let lastCall;
+  rotateTwitchers()
+  function rotateTwitchers(){
+    const twitchers = document.querySelectorAll(".twitching")
+    console.log(twitchers)
+    twitchers.forEach(div => {
+      rotationAmount = (forward ? "5deg" : "-5deg")
+      div.style.transform = `rotate(${rotationAmount})`
+    })
+    clearTimeout(lastCall)
+    lastCall = setTimeout(rotateTwitchers, 500)
+    forward = !forward
+  }
   
   async function main(){
     loadCoordData()
@@ -79,10 +94,16 @@ window.addEventListener('DOMContentLoaded', () => {
             const linkElement = document.createElement("a")
             linkElement.href = `piece.html?artist=${artistName}&imgName=${photo}`
 
+            const flair = document.createElement('img');
+            flair.classList.add("flair")
+            flair.classList.add("twitching")
+            flair.src = "./media/flair.png"
+
             const imageElement = document.createElement('img')
             imageElement.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/photos/${artistName}/${photo}_thumbnail.jpeg`
 
             linkElement.appendChild(imageElement)
+            linkElement.appendChild(flair)
             windowBody.appendChild(linkElement)
             window.append(windowBody)
 
