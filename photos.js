@@ -1,11 +1,20 @@
 window.addEventListener('DOMContentLoaded', () => {
-  const container = document.querySelector('.imageContainer');
+  const container = document.querySelector('.folderContainer');
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const folder = urlParams.get("folder");
   const location = urlParams.get("location")
 
+  let artistListResetState;
+
   main()
+  const resetButton = document.getElementById("reset-button")
+  resetButton.onclick = function(){
+    container.innerHTML = ""
+    artistListResetState.forEach(node => {
+      container.appendChild(node)
+    })
+  }
   
   async function main(){
     loadCoordData()
@@ -54,7 +63,6 @@ window.addEventListener('DOMContentLoaded', () => {
           photoList.forEach(photo => {
             const window = document.createElement('div');
             window.classList.add("window");
-            window.style = "width: 250px"
 
             const titleBar = document.createElement("div");
             titleBar.classList.add("title-bar")
@@ -65,9 +73,9 @@ window.addEventListener('DOMContentLoaded', () => {
             titleBar.appendChild(titleBarText)
             window.appendChild(titleBar)
 
-            const outerImageElement = document.createElement('div');
-            outerImageElement.classList.add("image")
-            
+            const windowBody = document.createElement('div');
+            windowBody.classList.add("window-body")
+
             const linkElement = document.createElement("a")
             linkElement.href = `piece.html?artist=${artistName}&imgName=${photo}`
 
@@ -75,8 +83,8 @@ window.addEventListener('DOMContentLoaded', () => {
             imageElement.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/photos/${artistName}/${photo}_thumbnail.jpeg`
 
             linkElement.appendChild(imageElement)
-            outerImageElement.appendChild(linkElement)
-            window.append(outerImageElement)
+            windowBody.appendChild(linkElement)
+            window.append(windowBody)
 
             //then, load the metadata
             //horribly inefficient, will likely add data to artist_meta eventually. have to reduce json size first.
@@ -96,6 +104,7 @@ window.addEventListener('DOMContentLoaded', () => {
             container.append(window)
           })
         })
+        artistListResetState = document.querySelectorAll(".folderContainer .window")
       })
       .catch(error => {
         console.log('Error:', error);
@@ -135,7 +144,7 @@ window.addEventListener('DOMContentLoaded', () => {
   function reorderPhotos(location) {
     console.log("reordering photos")
     console.log(location)
-    const allChildren = document.querySelectorAll(".imageContainer .window")
+    const allChildren = document.querySelectorAll(".folderContainer .window")
     container.innerHTML = ""
     const sortYes = []
     const sortNo = []
