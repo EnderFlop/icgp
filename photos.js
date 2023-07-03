@@ -6,6 +6,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const location = urlParams.get("location")
 
   let artistListResetState;
+  const flairCount = 9; //CHANGE ON NEW FLAIR. ALSO CHANGE IN INDEX.JS!
 
   main()
   const resetButton = document.getElementById("reset-button")
@@ -74,6 +75,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         const photos = artist_data["photos"]
 
+        let flairIndex = 0;
         Object.values(photos).forEach(photoList => {
           photoList.forEach(photo => {
             const window = document.createElement('div');
@@ -97,7 +99,7 @@ window.addEventListener('DOMContentLoaded', () => {
             const flair = document.createElement('img');
             flair.classList.add("flair")
             flair.classList.add("twitching")
-            flair.src = "./media/flair.png"
+            flair.src = `./media/flairs/flair${flairIndex}.png`
 
             const imageElement = document.createElement('img')
             imageElement.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/photos/${artistName}/${photo}_thumbnail.jpeg`
@@ -123,9 +125,13 @@ window.addEventListener('DOMContentLoaded', () => {
               }
             })
             container.append(window)
+
+            flairIndex += 1;
+            if (flairIndex == flairCount) {flairIndex = 0}
           })
         })
         artistListResetState = document.querySelectorAll(".folderContainer .window")
+        
       })
       .catch(error => {
         console.log('Error:', error);

@@ -2,11 +2,13 @@ window.addEventListener('DOMContentLoaded', () => {
   const folderContainer = document.querySelector('.folderContainer');
   let artistData;
   let artistListResetState;
+  const logoCount = 4 //CHANGE WHEN ADDING NEW LOGOS
+  const flairCount = 9 //CHANGE WHEN ADDING NEW FLAIRS. ALSO CHANGE IN PHOTOS.JS!
 
   function loadLogo() {
     console.log("loading logo")
     const logoElem = document.querySelector("#logo-img")
-    const logoCount = 4 //CHANGE WHEN ADDING NEW LOGOS
+
 
     var logoChoice = Math.floor(Math.random() * logoCount)//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 
@@ -39,6 +41,7 @@ window.addEventListener('DOMContentLoaded', () => {
       .then(data => {
         const sortedArtists = filterByTagCount(Object.entries(data))
         artistData = sortedArtists
+        let flairIndex = 0
         sortedArtists.forEach(folder => {
           folder = folder[1] //for each entry we want to use the value not the key
           const folderName = folder["name"]
@@ -50,7 +53,7 @@ window.addEventListener('DOMContentLoaded', () => {
           const flair = document.createElement('img');
           flair.classList.add("flair")
           flair.classList.add("twitching")
-          flair.src = "./media/flair.png"
+          flair.src = `./media/flairs/flair${flairIndex}.png`
 
           const titleBar = document.createElement("div");
           titleBar.classList.add("title-bar")
@@ -81,6 +84,9 @@ window.addEventListener('DOMContentLoaded', () => {
           windowBody.appendChild(folderLinkElement)
           window.appendChild(windowBody)
           folderContainer.appendChild(window);
+
+          flairIndex += 1;
+          if (flairIndex == flairCount) {flairIndex = 0}
         });
         artistListResetState = document.querySelectorAll(".folderContainer .window")
       })
