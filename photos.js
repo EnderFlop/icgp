@@ -6,7 +6,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const location = urlParams.get("location")
 
   let artistListResetState;
-  const flairCount = 9; //CHANGE ON NEW FLAIR. ALSO CHANGE IN INDEX.JS!
+  const flairCount = 15; //CHANGE ON NEW FLAIR. ALSO CHANGE IN INDEX.JS!
 
   main()
   const resetButton = document.getElementById("reset-button")

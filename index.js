@@ -3,7 +3,7 @@ window.addEventListener('DOMContentLoaded', () => {
   let artistData;
   let artistListResetState;
   const logoCount = 4 //CHANGE WHEN ADDING NEW LOGOS
-  const flairCount = 9 //CHANGE WHEN ADDING NEW FLAIRS. ALSO CHANGE IN PHOTOS.JS!
+  const flairCount = 15 //CHANGE WHEN ADDING NEW FLAIRS. ALSO CHANGE IN PHOTOS.JS!
 
   function loadLogo() {
     console.log("loading logo")
@@ -18,7 +18,6 @@ window.addEventListener('DOMContentLoaded', () => {
     if (logoChoice == currentLogo){
       logoChoice += 1
       if (logoChoice == logoCount) {logoChoice = 0}
-      console.log("new logo choice: " + logoChoice)
     }
     localStorage.setItem("logoId", logoChoice)
 
@@ -210,6 +209,10 @@ window.addEventListener('DOMContentLoaded', () => {
   loadLogo()
   loadFolders()
   loadMap()
+
+  const logoButton = document.getElementById("logo-refresh-button")
+  logoButton.onclick = function(){ loadLogo() }
+  
 
   const resetButton = document.getElementById("reset-button")
   resetButton.onclick = function(){
