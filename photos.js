@@ -22,7 +22,6 @@ window.addEventListener('DOMContentLoaded', () => {
   rotateTwitchers()
   function rotateTwitchers(){
     const twitchers = document.querySelectorAll(".twitching")
-    console.log(twitchers)
     twitchers.forEach(div => {
       rotationAmount = (forward ? "5deg" : "-5deg")
       div.style.transform = `rotate(${rotationAmount})`
@@ -74,6 +73,10 @@ window.addEventListener('DOMContentLoaded', () => {
         titleBarText.innerHTML = `ARTIST: ${artistName}`
 
         const photos = artist_data["photos"]
+
+        if (artist_data["favorite"] == true) {
+          loadFavoriteHeader()
+        }
 
         let flairIndex = 0;
         Object.values(photos).forEach(photoList => {
@@ -166,6 +169,48 @@ window.addEventListener('DOMContentLoaded', () => {
         reorderPhotos(currentLocation)
       })
     })
+  }
+
+  function loadFavoriteHeader() {
+    console.log("favorite artist! loading header")
+
+    const windowBody = document.getElementById("favorite-window-body");
+
+    const flair = document.createElement('img');
+    flair.classList.add("flair")
+    flair.src = `./media/favorite_flair.png`
+
+    const artistImage = document.createElement("img");
+    artistImage.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/photos/${folder}/${folder}.png`;
+
+    windowBody.appendChild(flair)
+    windowBody.appendChild(artistImage)
+
+    fetch(`https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/favorites.json`)
+    .then(res => res.json())
+    .then(data => {
+      artistData = data[folder]
+      console.log(artistData)
+      //description
+      const text = document.createElement("p")
+      text.innerHTML = artistData["description"]
+      windowBody.appendChild(text)
+      //tags with
+      if (artistData["tags_with"]){
+        const text = document.createElement("p")
+        text.innerHTML = "TAGS WITH: " + artistData["tags_with"]
+        windowBody.appendChild(text)
+      }
+      //groups
+      if (artistData["groups"]){
+        const text = document.createElement("p")
+        text.innerHTML = "GROUPS: " + artistData["groups"]
+        windowBody.appendChild(text)
+      }
+    })
+
+    const window = document.getElementById("favorite-window")
+    window.style.display = "block"
   }
 
   function reorderPhotos(location) {

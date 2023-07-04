@@ -66,7 +66,7 @@
   max-height: 100%;
 }
 
-.flair {
+.folderContainer .flair {
   visibility: hidden;
   overflow: visible;
   position: absolute;
@@ -129,6 +129,36 @@
   background-repeat: no-repeat;
   background-position: top 1px left 3px;
   justify-content: left;
+}
+
+/* Special Artist Page Changes */
+
+#favorite-window {
+  display: none;
+}
+
+#favorite-window .window-body {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+#favorite-window img {
+  width: 1000px;
+  height: auto;
+  transform: none;
+}
+
+#favorite-window p {
+  font-size: 22px;
+  padding-top: 20px;
+  text-align: center;
+}
+
+#favorite-window .flair {
+  position: absolute;
+  width: 1400px;
 }
 
 /* Google Maps CSS changes */
