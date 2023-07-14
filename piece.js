@@ -18,7 +18,7 @@ window.addEventListener('DOMContentLoaded', () => {
     photoWindowBody.appendChild(imageElement)
 
     //then, add the back button
-    const artist_url = `https://enderflop.github.io/iowacitygraffiti/photos.html?folder=${artist}`
+    const artist_url = `https://enderflop.github.io/icgp/photos.html?folder=${artist}`
     document.getElementById("back-button").onclick = function () {window.location.href=artist_url;}
     
 

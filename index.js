@@ -2,13 +2,13 @@ window.addEventListener('DOMContentLoaded', () => {
   const folderContainer = document.querySelector('.folderContainer');
   let artistData;
   let artistListResetState;
+  let showZeroLocations = false;
   const logoCount = 4 //CHANGE WHEN ADDING NEW LOGOS
   const flairCount = 15 //CHANGE WHEN ADDING NEW FLAIRS. ALSO CHANGE IN PHOTOS.JS!
 
   function loadLogo() {
     console.log("loading logo")
     const logoElem = document.querySelector("#logo-img")
-
 
     var logoChoice = Math.floor(Math.random() * logoCount)//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 
@@ -60,6 +60,9 @@ window.addEventListener('DOMContentLoaded', () => {
           const titleBarText = document.createElement('div');
           titleBarText.classList.add("title-bar-text")
           titleBarText.innerText = folderName + ": " + imgCount + (imgCount > 1 ? " tags" : " tag")
+          if (folder["favorite"]) {
+            titleBarText.innerText += " ⭐"
+          }
 
           titleBar.appendChild(titleBarText)
           window.appendChild(titleBar)
@@ -122,20 +125,22 @@ window.addEventListener('DOMContentLoaded', () => {
 
         const count = location[1]["count"]
         const position = {lat: myLat, lng: myLon}
-        const content = new PinElement({"glyph": `${count}`})
-    
-        const marker = new AdvancedMarkerElement({
-          map: map,
-          position: position,
-          content: content.element,
-          title: locationName
-        });
-        marker.addListener("click", ({domEvent, latLng}) => {
-          infoWindow.close()
-          infoWindow.setContent(marker.title)
-          reorderPhotos(marker.title)
-          infoWindow.open(marker.map, marker)
-        })
+        if (count > 0 || showZeroLocations == true) {
+          const content = new PinElement({"glyph": `${count}`})
+      
+          const marker = new AdvancedMarkerElement({
+            map: map,
+            position: position,
+            content: content.element,
+            title: locationName
+          });
+          marker.addListener("click", ({domEvent, latLng}) => {
+            infoWindow.close()
+            infoWindow.setContent(marker.title)
+            reorderPhotos(marker.title)
+            infoWindow.open(marker.map, marker)
+          })
+        }
       })
     })
   }
@@ -220,6 +225,12 @@ window.addEventListener('DOMContentLoaded', () => {
     artistListResetState.forEach(node => {
       folderContainer.appendChild(node)
     })
+  }
+
+  const zeroButton = document.getElementById("zero-button")
+  zeroButton.onclick = function(){
+    showZeroLocations = !showZeroLocations
+    loadMap()
   }
 
   let forward = true
