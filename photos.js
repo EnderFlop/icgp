@@ -105,6 +105,7 @@ window.addEventListener('DOMContentLoaded', () => {
             flair.src = `./media/flairs/flair${flairIndex}.png`
 
             const imageElement = document.createElement('img')
+            imageElement.classList.add("preview-image")
             imageElement.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/photos/${artistName}/${photo}_thumbnail.jpeg`
 
             linkElement.appendChild(imageElement)

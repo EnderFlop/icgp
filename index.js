@@ -71,7 +71,7 @@ window.addEventListener('DOMContentLoaded', () => {
           windowBody.classList.add("window-body")
 
           const previewImage = document.createElement('img');
-          previewImage.classList.add("previewImage")
+          previewImage.classList.add("preview-image")
           const previewURL = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/photos/${folderName}/PREVIEW_thumbnail.jpeg`
           previewImage.src = previewURL
           previewImage.title = `GOTO: ${folderName}`

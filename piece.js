@@ -47,7 +47,7 @@ window.addEventListener('DOMContentLoaded', () => {
           position = {lat: myLat, lng: myLon}
           const { Map } = await google.maps.importLibrary("maps");
           const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-          map = new Map(document.querySelector("#map"), {
+          map = new Map(document.querySelector("#piece-map"), {
             mapTypeId: "satellite",
             center: position,
             zoom: 18,

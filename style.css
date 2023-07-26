@@ -27,6 +27,14 @@
   height: auto;
 }
 
+/* container is the overarching holding div */
+
+.container .window .window-body:hover #map img{
+  transform: none;
+}
+
+/* folderContainer is inside Container. It holds all of the images. */
+
 .folderContainer {
   display: flex;
   flex-wrap: wrap;
@@ -41,24 +49,12 @@
   height: 175px;
 }
 
-.folderContainer .window .window-body {
+.folderContainer .window-body {
   display: block;
   height: 80%;
 }
 
-.container .window .window-body:hover img{
-  transform: scale(1.05);
-}
-
-.container .window .window-body:hover .flair{
-  visibility: visible;
-}
-
-.container .window .window-body:hover #map img{
-  transform: none;
-}
-
-.container .window .window-body img {
+.folderContainer .preview-image {
   object-fit: cover;
   width: 100%;
   height: 100%;
@@ -66,15 +62,25 @@
   max-height: 100%;
 }
 
-.folderContainer .flair {
+.folderContainer .window-body:hover .preview-image{
+  transform: scale(1.05);
+}
+
+.folderContainer .window-body:hover .flair{
+  visibility: visible;
+}
+
+/* flairs are over folderContainer images */
+
+.flair {
   visibility: hidden;
   overflow: visible;
   position: absolute;
   z-index: 100;
   bottom: -10px;
-  right: 0px;
+  right: -20px;
   height: 100%;
-  width: 100%;
+  width: 120%;
 }
 
 #map {
@@ -161,6 +167,35 @@
   width: 1400px;
 }
 
+/* Special piece page changes*/
+#piece-container {
+  display: flex;
+}
+
+#photo-window {
+  height: 100%;
+}
+
+#photo-window-body img {
+  max-width: 50vw;
+  max-height: 80vh;
+}
+
+#piece-map-window-body {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+#piece-map {
+  width: 30vw;
+  height: 30vw;
+}
+
+#metadata-list {
+  padding-left: 20px;
+}
+
 /* Mobile changes */
 @media screen and (max-width: 600px) {
   /* changes to hide homepage map images when small */
@@ -174,6 +209,22 @@
 
   #map-window {
     display: block;
+  }
+
+  /* chagnes to make map below piece on individual page */
+
+  #piece-container {
+    display: block;
+  }
+
+  #photo-window-body img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  #piece-map {
+    width: 100%;
+    height: 50vw;
   }
 
 }

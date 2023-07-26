@@ -9,36 +9,37 @@
   <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.4/build/98.css">
 </head>
 <body>
-  <div class="container" style="padding: 50px">
-    <div class="window" id="photo-window" style="width: 30%; height: auto; float: left;">
+  <div class="container" id="piece-container" style="padding: 50px">
+    <div class="window" id="photo-window">
       <div class="title-bar">
         <div class="title-bar-text" id="photo-title-bar-text"></div>
         <div class="title-bar-controls">
           <button id="back-button" aria-label="Close"></button>
         </div>
       </div>
-      <div class="window-body" id="photo-window-body" style="display: block; max-width: 100%; max-height: 100%;"></div>
+      <div class="window-body" id="photo-window-body"></div>
     </div>
 
 
-    <div class="window" id="map-window" style="width: 35%; height: auto; float: left;">
-      <div class="title-bar">
-        <div class="title-bar-text" id="map-title-bar-text">MAP</div>
+    <div id="map-and-meta">
+      <div class="window" id="piece-map-window">
+        <div class="title-bar">
+          <div class="title-bar-text" id="piece-map-title-bar-text">MAP</div>
+        </div>
+        <div class="window-body" id="piece-map-window-body">
+          <div id="piece-map"></div>
+        </div>
       </div>
-      <div class="window-body" id="map-window-body" style="display: block; max-width: 100%; max-height: 100%;">
-        <div id="map"></div>
-      </div>
-    </div>
-
-
-    <div class="window" id="metadata-window" style="width: 15%; height: auto; float: left;">
-      <div class="title-bar">
-        <div class="title-bar-text" id="metadata-title-bar-text">METADATA</div>
-      </div>
-      <div class="window-body" id="metadata-window-body" style="display: block; max-width: 100%; max-height: 100%;">
-        <ul id="metadata-list" style="padding-left: 20px;">
-
-        </ul>
+  
+  
+      <div class="window" id="metadata-window">
+        <div class="title-bar">
+          <div class="title-bar-text" id="metadata-title-bar-text">METADATA</div>
+        </div>
+        <div class="window-body" id="metadata-window-body">
+          <ul id="metadata-list">
+          </ul>
+        </div>
       </div>
     </div>
   </div>
