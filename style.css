@@ -37,7 +37,7 @@
 
 .folderContainer .window {
   position: relative;
-  width: 15%;
+  width: 200px;
   height: 175px;
 }
 
@@ -159,6 +159,23 @@
 #favorite-window .flair {
   position: absolute;
   width: 1400px;
+}
+
+/* Mobile changes */
+@media screen and (max-width: 600px) {
+  /* changes to hide homepage map images when small */
+  .map-row {
+    display: block;
+  }
+
+  .map-row .homepage-img {
+    display: none;
+  }
+
+  #map-window {
+    display: block;
+  }
+
 }
 
 /* Google Maps CSS changes */
