@@ -106,7 +106,7 @@ window.addEventListener('DOMContentLoaded', () => {
       mapTypeId: "satellite",
       center: {lat: 41.66011976254432, lng:-91.53466100556186},
       zoom: 15,
-      mapId: "MAP_ID"
+      mapId: "MAP_ID",
     })
 
     const infoWindow = new InfoWindow()

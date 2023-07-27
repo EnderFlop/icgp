@@ -27,13 +27,7 @@
   height: auto;
 }
 
-/* container is the overarching holding div */
-
-.container .window .window-body:hover #map img{
-  transform: none;
-}
-
-/* folderContainer is inside Container. It holds all of the images. */
+/* folderContainer is inside container. It holds all of the thumbnail images. */
 
 .folderContainer {
   display: flex;
@@ -230,16 +224,11 @@
 }
 
 /* Google Maps CSS changes */
-
-.gm-style-iw-d {
-  overflow: hidden !important; 
-  position: relative;
-  line-height: 1.35;
-  white-space: nowrap;
-  bottom: 5px;
-  right: 6px;
+  /* move buttons to left */
+.gm-bundled-control {
+  left: 0 !important;
 }
-
-.gm-ui-hover-effect {
-  display: none !important;
+  /* fill buttons with white */
+.gm-bundled-control > .gmnoprint > div  {
+  width: 75px !important;
 }
