@@ -177,14 +177,15 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const windowBody = document.getElementById("favorite-window-body");
 
-    const flair = document.createElement('img');
-    flair.classList.add("flair")
-    flair.src = `./media/favorite_flair.png`
+    const favArt = document.createElement('img');
+    favArt.id = "fav-art"
+    favArt.src = `./media/favorite_flair.png`
 
     const artistImage = document.createElement("img");
+    artistImage.id = "splash"
     artistImage.src = `https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/photos/${folder}/${folder}.png`;
 
-    windowBody.appendChild(flair)
+    windowBody.appendChild(favArt)
     windowBody.appendChild(artistImage)
 
     fetch(`https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/favorites.json`)
