@@ -230,3 +230,17 @@
 .gm-bundled-control > .gmnoprint > div  {
   width: 75px !important;
 }
+
+ /* fixes for awful textboxes on click */
+.gm-style-iw-d {
+  overflow: hidden !important; 
+  position: relative;
+  line-height: 1.35;
+  white-space: nowrap;
+  bottom: 5px;
+  right: 6px;
+}
+
+.gm-ui-hover-effect {
+  display: none !important;
+}

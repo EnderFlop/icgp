@@ -3,6 +3,7 @@ window.addEventListener('DOMContentLoaded', () => {
   let artistData;
   let artistListResetState;
   let showZeroLocations = false;
+  let showMissingLocations = false;
   const logoCount = 4 //CHANGE WHEN ADDING NEW LOGOS
   const flairCount = 15 //CHANGE WHEN ADDING NEW FLAIRS. ALSO CHANGE IN PHOTOS.JS!
 
@@ -143,6 +144,38 @@ window.addEventListener('DOMContentLoaded', () => {
         }
       })
     })
+    if (showMissingLocations) {
+      fetch("https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/missing_locations.json")
+      .then(res => res.json())
+      .then(data => {
+        data.forEach(location => {
+          const locationName = location.name;
+          const myLat = parseFloat(location.coords.split(", ")[0])
+          const myLon = parseFloat(location.coords.split(", ")[1])
+          const position = {lat: myLat, lng: myLon}
+          const reason = location.reason;
+
+          const content = new PinElement({
+            glyph: 'X',
+            borderColor: "#322653",
+            background: "#8062D6"
+          })
+
+          const marker = new AdvancedMarkerElement({
+            map: map,
+            position: position,
+            content: content.element,
+            title: locationName
+          });
+          marker.addListener("click", ({domEvent, latLng}) => {
+            infoWindow.close()
+            infoWindow.setContent(marker.title)
+            reorderPhotos(marker.title)
+            infoWindow.open(marker.map, marker)
+          })
+        })
+      })
+    }
   }
 
   function getArtistWindow(artist) {
@@ -152,7 +185,6 @@ window.addEventListener('DOMContentLoaded', () => {
       div = allChildren[i]
       titleBar = div.querySelector(".title-bar-text")
       if (titleBar.innerHTML.split(":")[0] == artist) {
-        console.log(div)
         return div
       }
     }
@@ -233,6 +265,12 @@ window.addEventListener('DOMContentLoaded', () => {
     loadMap()
   }
 
+  const missingButton = document.getElementById("missing-button")
+  missingButton.onclick = function(){
+    showMissingLocations = !showMissingLocations
+    loadMap()
+  }
+
   let forward = true
   let lastCall;
   rotateTwitchers()
@@ -246,6 +284,6 @@ window.addEventListener('DOMContentLoaded', () => {
     lastCall = setTimeout(rotateTwitchers, 500)
     forward = !forward
   }
-
-
 })
+
+// can add overlays on map with https://developers.google.com/maps/documentation/javascript/examples/polygon-simple
