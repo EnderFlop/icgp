@@ -4,6 +4,7 @@ window.addEventListener('DOMContentLoaded', () => {
   let artistListResetState;
   let showZeroLocations = false;
   let showMissingLocations = false;
+  let drawZone = true;
   const logoCount = 4 //CHANGE WHEN ADDING NEW LOGOS
   const flairCount = 15 //CHANGE WHEN ADDING NEW FLAIRS. ALSO CHANGE IN PHOTOS.JS!
 
@@ -144,6 +145,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
       })
     })
+
     if (showMissingLocations) {
       fetch("https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/missing_locations.json")
       .then(res => res.json())
@@ -175,6 +177,45 @@ window.addEventListener('DOMContentLoaded', () => {
           })
         })
       })
+    }
+
+    if (drawZone) {
+      zoneCoords = [
+        "41.668251773029645, -91.53461606622527",
+        "41.66359909211641, -91.53463718400026",
+        "41.66353006219566, -91.52870244996366",
+        "41.654105061513, -91.52882236015645",
+        "41.65411639823388, -91.53022205698203",
+        "41.65438564476811, -91.53023343663102",
+        "41.65440548394189, -91.53176210281175",
+        "41.65660759427152, -91.53165589276536",
+        "41.65665027245427, -91.53917016813942",
+        "41.65789158249606, -91.53912464955059",
+        "41.658081469997285, -91.54190243727162",
+        "41.6612665497416, -91.54212069958716",
+        "41.66431070335623, -91.54103922587753",
+        "41.66437587914452, -91.54177890306175",
+        "41.665387512268644, -91.54214684504572",
+        "41.6662546137439, -91.54220374329023",
+        "41.66662582028792, -91.54161958797579",
+        "41.66591740901998, -91.54064852458545",
+        "41.66763175091372, -91.54029575545707",
+        "41.66835591369653, -91.53744535177692",
+        "41.667778867176956, -91.53625981540377",
+        "41.66960991406527, -91.53397812582072",
+        "41.66849481090777, -91.53374846727576",
+        "41.668251773029645, -91.53461606622527",
+      ]
+      formattedCoords = zoneCoords.map(coord => {return {lat: parseFloat(coord.split(", ")[0]), lng: parseFloat(coord.split(", ")[1])}})
+      console.log(formattedCoords)
+      const coveredZone = new google.maps.Polygon({
+        paths: formattedCoords,
+        strokeColor: "#BA1B1D",
+        fillColor: "#FF729F",
+        fillOpacity: 0
+      })
+
+      coveredZone.setMap(map)
     }
   }
 
