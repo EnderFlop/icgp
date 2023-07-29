@@ -8,6 +8,12 @@ window.addEventListener('DOMContentLoaded', () => {
   const logoCount = 4 //CHANGE WHEN ADDING NEW LOGOS
   const flairCount = 15 //CHANGE WHEN ADDING NEW FLAIRS. ALSO CHANGE IN PHOTOS.JS!
 
+  function main() {
+    loadLogo()
+    loadFolders()
+    loadMap()
+  }
+
   function loadLogo() {
     console.log("loading logo")
     const logoElem = document.querySelector("#logo-img")
@@ -16,7 +22,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
     //if the random logo was the last one seen, change it.
     let currentLogo = Number(localStorage.getItem("logoId")) || 0
-    console.log("logo choice: " + logoChoice + "current logo: " + currentLogo)
     if (logoChoice == currentLogo){
       logoChoice += 1
       if (logoChoice == logoCount) {logoChoice = 0}
@@ -122,11 +127,9 @@ window.addEventListener('DOMContentLoaded', () => {
         const locationName = location[0]
         
         const coords = location[1]["lat_long"]
-        const myLat = parseFloat(coords.split(", ")[0])
-        const myLon = parseFloat(coords.split(", ")[1])
+        const position = formateCoord(coords)
 
         const count = location[1]["count"]
-        const position = {lat: myLat, lng: myLon}
         if (count > 0 || showZeroLocations == true) {
           const content = new PinElement({"glyph": `${count}`})
       
@@ -147,90 +150,89 @@ window.addEventListener('DOMContentLoaded', () => {
     })
 
     if (showMissingLocations) {
-      fetch("https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/missing_locations.json")
-      .then(res => res.json())
-      .then(data => {
-        data.forEach(location => {
-          const locationName = location.name;
-          const myLat = parseFloat(location.coords.split(", ")[0])
-          const myLon = parseFloat(location.coords.split(", ")[1])
-          const position = {lat: myLat, lng: myLon}
-          const reason = location.reason;
-
-          const content = new PinElement({
-            glyph: 'X',
-            borderColor: "#322653",
-            background: "#8062D6"
-          })
-
-          const marker = new AdvancedMarkerElement({
-            map: map,
-            position: position,
-            content: content.element,
-            title: locationName
-          });
-          marker.addListener("click", ({domEvent, latLng}) => {
-            infoWindow.close()
-            infoWindow.setContent(marker.title)
-            reorderPhotos(marker.title)
-            infoWindow.open(marker.map, marker)
-          })
-        })
-      })
+      drawMissingLocations(map)
     }
 
     if (drawZone) {
-      zoneCoords = [
-        "41.668251773029645, -91.53461606622527",
-        "41.66359909211641, -91.53463718400026",
-        "41.66353006219566, -91.52870244996366",
-        "41.654105061513, -91.52882236015645",
-        "41.65411639823388, -91.53022205698203",
-        "41.65438564476811, -91.53023343663102",
-        "41.65440548394189, -91.53176210281175",
-        "41.65660759427152, -91.53165589276536",
-        "41.65665027245427, -91.53917016813942",
-        "41.65789158249606, -91.53912464955059",
-        "41.658081469997285, -91.54190243727162",
-        "41.6612665497416, -91.54212069958716",
-        "41.66431070335623, -91.54103922587753",
-        "41.66437587914452, -91.54177890306175",
-        "41.665387512268644, -91.54214684504572",
-        "41.6662546137439, -91.54220374329023",
-        "41.66662582028792, -91.54161958797579",
-        "41.66591740901998, -91.54064852458545",
-        "41.66763175091372, -91.54029575545707",
-        "41.66835591369653, -91.53744535177692",
-        "41.667778867176956, -91.53625981540377",
-        "41.66960991406527, -91.53397812582072",
-        "41.66849481090777, -91.53374846727576",
-        "41.668251773029645, -91.53461606622527",
-      ]
-      formattedCoords = zoneCoords.map(coord => {return {lat: parseFloat(coord.split(", ")[0]), lng: parseFloat(coord.split(", ")[1])}})
-      console.log(formattedCoords)
-      const coveredZone = new google.maps.Polygon({
-        paths: formattedCoords,
-        strokeColor: "#BA1B1D",
-        fillColor: "#FF729F",
-        fillOpacity: 0
+      drawSummerZone(map)
+    }
+  }
+
+  //map helper to draw the purple X locations
+  async function drawMissingLocations(map) {
+    console.log("loading missing locations")
+    const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary("marker");
+    fetch("https://raw.githubusercontent.com/EnderFlop/iowacitygraffiti-archive/master/missing_locations.json")
+    .then(res => res.json())
+    .then(data => {
+      data.forEach(location => {
+        const locationName = location.name;
+        const position = formateCoord(location.coords)
+        const reason = location.reason;
+
+        const content = new PinElement({
+          glyph: 'X',
+          borderColor: "#322653",
+          background: "#8062D6"
+        })
+
+        const marker = new AdvancedMarkerElement({
+          map: map,
+          position: position,
+          content: content.element,
+          title: locationName
+        });
+        marker.addListener("click", ({domEvent, latLng}) => {
+          infoWindow.close()
+          infoWindow.setContent(marker.title)
+          reorderPhotos(marker.title)
+          infoWindow.open(marker.map, marker)
+        })
       })
-
-      coveredZone.setMap(map)
-    }
+    })
   }
 
-  function getArtistWindow(artist) {
-    // currently O(n). Could give each artist window an id={artist} and query by that? not slow enough to care rn
-    const allChildren = document.querySelectorAll(".folderContainer .window")
-    for (let i = 0; i < allChildren.length; i++) {
-      div = allChildren[i]
-      titleBar = div.querySelector(".title-bar-text")
-      if (titleBar.innerHTML.split(":")[0] == artist) {
-        return div
-      }
-    }
+  //map helper to draw the summer 2023 zone. Coords done manually.
+  function drawSummerZone(map) {
+    console.log("drawing zone")
+    zoneCoords = [
+      "41.668251773029645, -91.53461606622527",
+      "41.66359909211641, -91.53463718400026",
+      "41.66353006219566, -91.52870244996366",
+      "41.654105061513, -91.52882236015645",
+      "41.65411639823388, -91.53022205698203",
+      "41.65438564476811, -91.53023343663102",
+      "41.65440548394189, -91.53176210281175",
+      "41.65660759427152, -91.53165589276536",
+      "41.65665027245427, -91.53917016813942",
+      "41.65789158249606, -91.53912464955059",
+      "41.658081469997285, -91.54190243727162",
+      "41.6612665497416, -91.54212069958716",
+      "41.66431070335623, -91.54103922587753",
+      "41.66437587914452, -91.54177890306175",
+      "41.665387512268644, -91.54214684504572",
+      "41.6662546137439, -91.54220374329023",
+      "41.66662582028792, -91.54161958797579",
+      "41.66591740901998, -91.54064852458545",
+      "41.66763175091372, -91.54029575545707",
+      "41.66835591369653, -91.53744535177692",
+      "41.667778867176956, -91.53625981540377",
+      "41.66960991406527, -91.53397812582072",
+      "41.66849481090777, -91.53374846727576",
+      "41.668251773029645, -91.53461606622527",
+    ]
+    formattedCoords = zoneCoords.map(coord => formateCoord(coord))
+    const coveredZone = new google.maps.Polygon({
+      paths: formattedCoords,
+      strokeColor: "#BA1B1D",
+      fillColor: "#FF729F",
+      fillOpacity: 0
+    })
+
+    coveredZone.setMap(map)
   }
 
+  //reorder photos given a location name
   function reorderPhotos(location) {
     const sortYes = []
     const sortNo = []
@@ -240,8 +242,7 @@ window.addEventListener('DOMContentLoaded', () => {
       const metadata = artistObject[1]
 
       // get the artist's div. n^2, sorry
-      const realArtistWindow = getArtistWindow(artist); 
-      const artistWindow = realArtistWindow.cloneNode(true)
+      const artistWindow = getArtistWindow(artist).cloneNode(true); 
       const artistImage = artistWindow.querySelector("img")
       const folderLinkElement = artistWindow.querySelector("#folder-link")
       const titleBarText = artistWindow.querySelector(".title-bar-text");
@@ -284,16 +285,15 @@ window.addEventListener('DOMContentLoaded', () => {
     })
   }
 
-  loadLogo()
-  loadFolders()
-  loadMap()
-
+  //assign buttons onclicks
   const logoButton = document.getElementById("logo-refresh-button")
   logoButton.onclick = function(){ loadLogo() }
-  
 
   const resetButton = document.getElementById("reset-button")
   resetButton.onclick = function(){
+    showMissingLocations = false
+    showZeroLocations = false
+    loadMap()
     folderContainer.innerHTML = ""
     artistListResetState.forEach(node => {
       folderContainer.appendChild(node)
@@ -312,6 +312,7 @@ window.addEventListener('DOMContentLoaded', () => {
     loadMap()
   }
 
+  //handle twitchers
   let forward = true
   let lastCall;
   rotateTwitchers()
@@ -325,6 +326,28 @@ window.addEventListener('DOMContentLoaded', () => {
     lastCall = setTimeout(rotateTwitchers, 500)
     forward = !forward
   }
+
+  //other helpers
+  function formateCoord(coord) {
+    return {
+      lat: parseFloat(coord.split(", ")[0]), 
+      lng: parseFloat(coord.split(", ")[1])
+    } 
+  }
+
+  function getArtistWindow(artist) {
+    // currently O(n). Could give each artist window an id={artist} and query by that? not slow enough to care rn
+    const allChildren = document.querySelectorAll(".folderContainer .window")
+    for (let i = 0; i < allChildren.length; i++) {
+      div = allChildren[i]
+      titleBar = div.querySelector(".title-bar-text")
+      if (titleBar.innerHTML.split(":")[0] == artist) {
+        return div
+      }
+    }
+  }
+
+  main()
 })
 
 // can add overlays on map with https://developers.google.com/maps/documentation/javascript/examples/polygon-simple
