@@ -5,6 +5,7 @@ window.addEventListener('DOMContentLoaded', () => {
   let showZeroLocations = false;
   let showMissingLocations = false;
   let drawZone = false;
+  let totalPieceCount = 0;
   const logoCount = 4 //CHANGE WHEN ADDING NEW LOGOS
   const flairCount = 15 //CHANGE WHEN ADDING NEW FLAIRS. ALSO CHANGE IN PHOTOS.JS!
 
@@ -52,6 +53,7 @@ window.addEventListener('DOMContentLoaded', () => {
           folder = folder[1] //for each entry we want to use the value not the key
           const folderName = folder["name"]
           const imgCount = folder["count"]
+          totalPieceCount += imgCount
 
           const window = document.createElement('div');
           window.classList.add("window");
@@ -98,6 +100,7 @@ window.addEventListener('DOMContentLoaded', () => {
           if (flairIndex == flairCount) {flairIndex = 0}
         });
         artistListResetState = document.querySelectorAll(".folderContainer .window")
+        loadPieceCount()
       })
       .catch(error => {
         console.log('Error:', error);
@@ -156,6 +159,11 @@ window.addEventListener('DOMContentLoaded', () => {
     if (drawZone) {
       drawSummerZone(map)
     }
+  }
+
+  function loadPieceCount() {
+    const text = document.getElementById("count-header")
+    text.innerText = `Currently sorted and on site: ${totalPieceCount} of 4515 photos!`
   }
 
   //map helper to draw the purple X locations

@@ -92,6 +92,12 @@
 
 /* Special Homepage changes */
 
+#count-header{
+  font-size: 33pt;
+  text-align: center;
+  padding: 10px;
+}
+
 .map-row {
   display: table;
 }
