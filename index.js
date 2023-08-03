@@ -2,7 +2,6 @@ window.addEventListener('DOMContentLoaded', () => {
   const folderContainer = document.querySelector('.folderContainer');
   let artistData;
   let artistListResetState;
-  let showZeroLocations = false;
   let showMissingLocations = false;
   let drawZone = false;
   let totalPieceCount = 0;
@@ -133,22 +132,21 @@ window.addEventListener('DOMContentLoaded', () => {
         const position = formateCoord(coords)
 
         const count = location[1]["count"]
-        if (count > 0 || showZeroLocations == true) {
-          const content = new PinElement({"glyph": `${count}`})
-      
-          const marker = new AdvancedMarkerElement({
-            map: map,
-            position: position,
-            content: content.element,
-            title: locationName
-          });
-          marker.addListener("click", ({domEvent, latLng}) => {
-            infoWindow.close()
-            infoWindow.setContent(marker.title)
-            reorderPhotos(marker.title)
-            infoWindow.open(marker.map, marker)
-          })
-        }
+
+        const content = new PinElement({"glyph": `${count}`})
+    
+        const marker = new AdvancedMarkerElement({
+          map: map,
+          position: position,
+          content: content.element,
+          title: locationName
+        });
+        marker.addListener("click", ({domEvent, latLng}) => {
+          infoWindow.close()
+          infoWindow.setContent(marker.title)
+          reorderPhotos(marker.title)
+          infoWindow.open(marker.map, marker)
+        })
       })
     })
 
@@ -163,7 +161,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   function loadPieceCount() {
     const text = document.getElementById("count-header")
-    text.innerText = `Currently sorted and on site: ${totalPieceCount} of 4515 photos!`
+    text.innerText = `Currently sorted and on site: ${totalPieceCount} photos!`
   }
 
   //map helper to draw the purple X locations
@@ -306,12 +304,6 @@ window.addEventListener('DOMContentLoaded', () => {
     artistListResetState.forEach(node => {
       folderContainer.appendChild(node)
     })
-  }
-
-  const zeroButton = document.getElementById("zero-button")
-  zeroButton.onclick = function(){
-    showZeroLocations = !showZeroLocations
-    loadMap()
   }
 
   const missingButton = document.getElementById("missing-button")
