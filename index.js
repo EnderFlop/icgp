@@ -18,7 +18,7 @@ window.addEventListener('DOMContentLoaded', () => {
     console.log("loading logo")
     const logoElem = document.querySelector("#logo-img")
 
-    var logoChoice = Math.floor(Math.random() * logoCount + 1)//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+    var logoChoice = Math.floor(Math.random() * logoCount)//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 
     //if the random logo was the last one seen, change it.
     let currentLogo = Number(localStorage.getItem("logoId")) || 1
