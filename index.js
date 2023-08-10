@@ -18,18 +18,18 @@ window.addEventListener('DOMContentLoaded', () => {
     console.log("loading logo")
     const logoElem = document.querySelector("#logo-img")
 
-    var logoChoice = Math.floor(Math.random() * logoCount)//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+    var logoChoice = Math.floor(Math.random() * logoCount + 1)//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 
     //if the random logo was the last one seen, change it.
-    let currentLogo = Number(localStorage.getItem("logoId")) || 0
+    let currentLogo = Number(localStorage.getItem("logoId")) || 1
     if (logoChoice == currentLogo){
       logoChoice += 1
-      if (logoChoice == logoCount) {logoChoice = 0}
+      if (logoChoice == logoCount) {logoChoice = 1}
     }
     localStorage.setItem("logoId", logoChoice)
 
     const logoText = document.querySelector("#logo-title-bar-text")
-    logoText.innerHTML = `Logo ${logoChoice + 1} of ${logoCount}`
+    logoText.innerHTML = `Logo ${logoChoice} of ${logoCount}`
 
     logoElem.src = `./media/logo${logoChoice}.png`
   }
