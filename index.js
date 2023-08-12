@@ -29,7 +29,7 @@ window.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem("logoId", logoChoice)
 
     const logoText = document.querySelector("#logo-title-bar-text")
-    logoText.innerHTML = `Logo ${logoChoice} of ${logoCount}`
+    logoText.innerHTML = `Logo ${logoChoice + 1} of ${logoCount}`
 
     logoElem.src = `./media/logo${logoChoice}.png`
   }
