@@ -5,7 +5,7 @@ window.addEventListener('DOMContentLoaded', () => {
   let showMissingLocations = false;
   let drawZone = false;
   let totalPieceCount = 0;
-  const logoCount = 4 //CHANGE WHEN ADDING NEW LOGOS
+  const logoCount = 5 //CHANGE WHEN ADDING NEW LOGOS
   const flairCount = 15 //CHANGE WHEN ADDING NEW FLAIRS. ALSO CHANGE IN PHOTOS.JS!
 
   function main() {
@@ -161,7 +161,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   function loadPieceCount() {
     const text = document.getElementById("count-header")
-    text.innerText = `Currently sorted and on site: ${totalPieceCount} photos!`
+    text.innerText = `A completed snapshot of ${totalPieceCount} tags from Summer 2023`
   }
 
   //map helper to draw the purple X locations
